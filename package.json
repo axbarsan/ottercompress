@@ -1,0 +1,16 @@
+{
+  "name": "ottercompress",
+  "version": "1.0.0",
+  "description": "Just an otter compressing some photos",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "electron ./dist/index.js"
+  },
+  "author": "axbarsan",
+  "devDependencies": {
+    "electron": "^4.0.5",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {}
+}
