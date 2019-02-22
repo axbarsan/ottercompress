@@ -1,0 +1,7 @@
+.image-process__filelist__file {
+  border: 2px solid #000;
+}
+.image-process__filelist__file img {
+  max-width: 300px;
+  max-height: 300px;
+}

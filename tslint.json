@@ -6,11 +6,13 @@
         120
       ]
     },
+    "trailing-comma": false,
     "new-parens": true,
     "no-arg": true,
     "no-bitwise": true,
     "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false
+    "no-consecutive-blank-lines": false,
+
   },
   "jsRules": {
     "max-line-length": {

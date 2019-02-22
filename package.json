@@ -4,7 +4,7 @@
   "description": "Just an otter compressing some photos",
   "scripts": {
     "prestart": "tsc",
-    "start": "electron ./dist/index.js"
+    "start": "electron --debug ./dist/main.js"
   },
   "author": "axbarsan",
   "devDependencies": {
@@ -12,5 +12,7 @@
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "jimp": "^0.6.0"
+  }
 }

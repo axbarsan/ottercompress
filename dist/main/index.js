@@ -21,15 +21,21 @@ var Application = /** @class */ (function () {
         this.mainWindow = null;
     };
     Application.prototype.onReady = function () {
+        var _this = this;
         this.mainWindow = new electron_1.BrowserWindow({
             height: 600,
             width: 800,
+            show: false,
         });
         this.mainWindow
             .loadURL("file://" + path.join(__dirname, "../../index.html"));
+        this.mainWindow.once('ready-to-show', function () {
+            if (_this.mainWindow !== null)
+                _this.mainWindow.show();
+        });
         this.mainWindow.on("closed", this.onClose);
     };
     return Application;
 }());
 exports.default = Application;
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=index.js.map
