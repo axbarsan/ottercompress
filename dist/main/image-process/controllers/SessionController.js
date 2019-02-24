@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Session_1 = require("./Session");
+var Session_1 = require("../datatypes/Session");
 var FilesController_1 = require("./FilesController");
 var electron_1 = require("electron");
+var ImageProcessorController_1 = require("./ImageProcessorController");
 var SessionController = /** @class */ (function () {
     function SessionController() {
         SessionController.setUpFileSelectEvents();
@@ -23,6 +24,7 @@ var SessionController = /** @class */ (function () {
         });
         ipcMain.on("imgproc:select-target-folder", function (evt, path) {
             SessionController.currentSession.targetPath = path;
+            ImageProcessorController_1.default.targetPath = path;
         });
         ipcMain.on("imgproc:queue:start", function (evt) {
             evt.sender.send("imgproc:queue:in-progress");

@@ -1,15 +1,15 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
-import SessionController from "./image-process/SessionController";
+import ImageProcessModule from "./image-process/";
 
 export default class Application {
-  public mainWindow: BrowserWindow | null = null;
-  protected sessionController: SessionController | null = null;
+  protected mainWindow: BrowserWindow | null = null;
+  protected imageProcessModule: ImageProcessModule | null = null;
 
   constructor() {
     app.on("window-all-closed", this.onWindowAllClosed.bind(this));
     app.on("ready", this.onReady.bind(this));
-    this.sessionController = new SessionController();
+    this.imageProcessModule = new ImageProcessModule();
   }
 
   private onWindowAllClosed() {
@@ -19,7 +19,6 @@ export default class Application {
   }
 
   private onClose() {
-    // Dereference the window object.
     this.mainWindow = null;
   }
 

@@ -1,5 +1,5 @@
-import IImageData from "../../interfaces/IImageData";
-import FilesController from "./FilesController";
+import IImageData from "../../../interfaces/IImageData";
+import FilesController from "../controllers/FilesController";
 
 export default class Image {
   protected _isRead: boolean = false;
@@ -14,6 +14,7 @@ export default class Image {
       const stat = fs.lstatSync(this.path);
 
       this.fileData = {
+        location: FilesController.getFileLocation(this.path),
         filename: FilesController.getFileName(this.path),
         extension: FilesController.getFileExtension(this.path),
         size: stat.size,

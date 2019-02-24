@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var FilesController_1 = require("./FilesController");
+var FilesController_1 = require("../controllers/FilesController");
 var Image = /** @class */ (function () {
     function Image(path) {
         this.path = path;

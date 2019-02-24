@@ -1,7 +1,8 @@
-import Session from "./Session";
+import Session from "../datatypes/Session";
 import FilesController from "./FilesController";
 import ImageController from "./ImageController";
 import { BrowserWindow } from "electron";
+import ImageProcessor from "./ImageProcessorController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
@@ -18,9 +19,7 @@ export default class SessionController {
     const { ipcMain } = require("electron");
 
     ipcMain.on("imgproc:select-parent-folder", (evt: Electron.IpcMessageEvent, path: string | null) => {
-      if (path === null)
-        SessionController.clearQueue();
-      else
+      if (path !== null)
         SessionController.addImagesInFolder(path);
 
       SessionController.currentSession.parentPath = path;
@@ -28,6 +27,7 @@ export default class SessionController {
 
     ipcMain.on("imgproc:select-target-folder", (evt: Electron.IpcMessageEvent, path: string | null) => {
       SessionController.currentSession.targetPath = path;
+      ImageProcessor.targetPath = path;
     });
 
     ipcMain.on("imgproc:queue:start", (evt: Electron.IpcMessageEvent) => {
@@ -37,9 +37,10 @@ export default class SessionController {
   }
 
   protected static startQueue(): void {
-    SessionController.currentSession.queue.process((err: Error | null, imgControllers: ImageController[] | null): void => {
-      console.log(err, imgControllers);
-    });
+    SessionController.currentSession.queue.process(
+      (err: Error | null, imgControllers: ImageController[] | null): void => {
+        console.log(err, imgControllers);
+      });
   }
 
   protected static addImagesInFolder(path: string): void {

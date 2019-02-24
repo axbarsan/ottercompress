@@ -1,5 +1,5 @@
 export default class FilesController {
-  public static readonly extensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+  public static readonly extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp"];
 
   public static getImagesInFolder(folderPath: string): string[] {
     const fs = require("fs");
@@ -21,6 +21,12 @@ export default class FilesController {
     return files;
   }
 
+  public static getFileExtension(filePath: string): string {
+    const path = require("path");
+
+    return path.parse(filePath).ext;
+  }
+
   public static fileHasValidExtension(filePath: string): boolean {
     const fileExtension: string = FilesController.getFileExtension(filePath);
 
@@ -28,20 +34,14 @@ export default class FilesController {
   }
 
   public static getFileName(filePath: string): string {
-    const fileName: string | undefined = filePath.split(".").shift();
+    const path = require("path");
 
-    if (fileName !== undefined)
-      return fileName;
-
-    return "";
+    return path.parse(filePath).name;
   }
 
-  public static getFileExtension(filePath: string): string {
-    const fileName: string | undefined = filePath.split(".").pop();
+  public static getFileLocation(filePath: string): string {
+    const path = require("path");
 
-    if (fileName !== undefined)
-      return fileName;
-
-    return "";
+    return path.parse(filePath).dir;
   }
 }

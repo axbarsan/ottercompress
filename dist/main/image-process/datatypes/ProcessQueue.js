@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ImageController_1 = require("./ImageController");
-var ImageProcessor_1 = require("./ImageProcessor");
+var ImageController_1 = require("../controllers/ImageController");
+var ImageProcessorController_1 = require("../controllers/ImageProcessorController");
 var ProcessQueue = /** @class */ (function () {
     function ProcessQueue() {
         this.queue = new Set();
@@ -40,8 +40,7 @@ var ProcessQueue = /** @class */ (function () {
         var err = new Error();
         this.queue.forEach(function (controller) {
             if (!controller.isProcessed) {
-                var imgProcessor = new ImageProcessor_1.default(controller);
-                queueItems.push(imgProcessor.process());
+                queueItems.push(ImageProcessorController_1.default.process(controller));
             }
         });
         Promise.all(queueItems)

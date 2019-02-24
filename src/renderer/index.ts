@@ -1,28 +1,11 @@
-import ImageDialog from "./image-process/ImageDialogController";
-import ImagePickerController from "./image-process/ImagePickerController";
-import ImageProcessController from "./image-process/ImageProcessController";
+import ImageProcessRenderer from "./image-process/";
 
-export const imagePickerController: ImagePickerController = new ImagePickerController();
+export default class Renderer {
+  public imageProcessRenderer: ImageProcessRenderer | null = null;
 
-window.addEventListener("DOMContentLoaded", () => {
-  const parentFolderSelectBtn: HTMLButtonElement | null = document.querySelector(".image-process__select--parent button");
-  if (parentFolderSelectBtn !== null) {
-    parentFolderSelectBtn.addEventListener("click", () => {
-      ImageDialog.showOpenDialog();
-    })
+  constructor() {
+    this.imageProcessRenderer = new ImageProcessRenderer();
   }
+}
 
-  const targetFolderSelectBtn: HTMLButtonElement | null = document.querySelector(".image-process__select--target button");
-  if (targetFolderSelectBtn !== null) {
-    targetFolderSelectBtn.addEventListener("click", () => {
-      ImageDialog.showOpenDialog(false);
-    })
-  }
-
-  const imageProcessButton: HTMLButtonElement | null = document.querySelector(".image-process__action button");
-  if (imageProcessButton !== null) {
-    imageProcessButton.addEventListener("click", () => {
-      ImageProcessController.handleQueue();
-    })
-  }
-});
+export const currentRenderer: Renderer = new Renderer();

@@ -1,4 +1,5 @@
-import ImageController from "./ImageController";
+import ImageController from "../controllers/ImageController";
+import ImageProcessor from "../controllers/ImageProcessorController";
 
 export default class ProcessQueue {
   protected queue: Set<ImageController> = new Set();
@@ -11,6 +12,7 @@ export default class ProcessQueue {
   public add(path: string): ImageController {
     const imageController: ImageController = new ImageController(path);
     this.queue.add(imageController);
+    this._isFinished = false;
 
     return imageController;
   }
@@ -25,14 +27,20 @@ export default class ProcessQueue {
 
   public clear(): void {
     this.queue.clear();
+    this._isFinished = false;
   }
 
   public process(cb?: (error: Error | null, imagesControllers: ImageController[] | null) => void): void {
+    if (this._isFinished)
+      return;
+
     const queueItems: Promise<ImageController>[] = [];
     let err: Error = new Error();
 
     this.queue.forEach((controller: ImageController): void => {
-      queueItems.push(controller.process());
+      if (!controller.isProcessed) {
+        queueItems.push(ImageProcessor.process(controller));
+      }
     });
 
     Promise.all(queueItems)

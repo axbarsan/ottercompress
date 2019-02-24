@@ -1,5 +1,5 @@
 export default class ImageDialog {
-  public static showOpenDialog(entryFolder: boolean = true): void {
+  public static showParentFolderDialog(): void {
     const { dialog } = require("electron").remote;
 
     dialog.showOpenDialog({
@@ -14,10 +14,27 @@ export default class ImageDialog {
           ? folderPath[0]
           : null);
 
-      if (entryFolder)
-        ImageDialog.sendEntryFolderEvent(pathToSend);
-      else
-        ImageDialog.sendTargetFolderEvent(pathToSend);
+      ImageDialog.sendEntryFolderEvent(pathToSend);
+    });
+  }
+
+  public static showTargetFolderDialog(): void {
+    const { dialog } = require("electron").remote;
+
+    dialog.showOpenDialog({
+      title: "Pick a folder where to export the processed files",
+      buttonLabel: "Select",
+      properties: [
+        "openDirectory",
+        "createDirectory"
+      ],
+    }, (folderPath: string[] | undefined): void => {
+      const pathToSend: string | null =
+        (folderPath !== undefined
+          ? folderPath[0]
+          : null);
+
+      ImageDialog.sendTargetFolderEvent(pathToSend);
     });
   }
 

@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
-var SessionController_1 = require("./image-process/SessionController");
+var image_process_1 = require("./image-process/");
 var Application = /** @class */ (function () {
     function Application() {
         this.mainWindow = null;
-        this.sessionController = null;
+        this.imageProcessModule = null;
         electron_1.app.on("window-all-closed", this.onWindowAllClosed.bind(this));
         electron_1.app.on("ready", this.onReady.bind(this));
-        this.sessionController = new SessionController_1.default();
+        this.imageProcessModule = new image_process_1.default();
     }
     Application.prototype.onWindowAllClosed = function () {
         if (process.platform !== "darwin") {
@@ -17,7 +17,6 @@ var Application = /** @class */ (function () {
         }
     };
     Application.prototype.onClose = function () {
-        // Dereference the window object.
         this.mainWindow = null;
     };
     Application.prototype.onReady = function () {

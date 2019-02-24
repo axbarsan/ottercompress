@@ -1,8 +1,8 @@
-import Image from "./Image";
+import Image from "../datatypes/Image";
 
 export default class ImageController {
   protected _originalImage: Image;
-  protected processedImage: Buffer | null = null;
+  protected _processedImage: Buffer | null = null;
   protected _isProcessed: boolean = false;
 
   constructor(public readonly originalImagePath: string) {
@@ -17,10 +17,12 @@ export default class ImageController {
     return this._isProcessed;
   }
 
-  public async process(): Promise<ImageController> {
-    return new Promise ((resolve: Function): void => {
-      resolve(this);
-      this._isProcessed = true;
-    });
+  public get processedImage(): Buffer | null {
+    return this._processedImage;
+  }
+
+  public set processedImage(value: Buffer | null) {
+    this._processedImage = value;
+    this._isProcessed = true;
   }
 }

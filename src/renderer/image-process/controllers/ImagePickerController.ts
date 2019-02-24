@@ -1,4 +1,4 @@
-import IImageData from "../../interfaces/IImageData";
+import IImageData from "../../../interfaces/IImageData";
 
 export default class ImagePickerController {
   protected static readonly images: IImageData[] = [];
