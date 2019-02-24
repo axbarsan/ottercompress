@@ -41,7 +41,6 @@ export default class ImageProcessorController {
         image.deflateLevel(9);
         image.filterType(Jimp.PNG_FILTER_PATH);
         image.deflateStrategy(3);
-        console.log("is png");
         break;
     }
   }

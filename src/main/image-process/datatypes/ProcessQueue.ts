@@ -1,8 +1,8 @@
 import ImageController from "../controllers/ImageController";
-import ImageProcessor from "../controllers/ImageProcessorController";
+import ImageProcessorController from "../controllers/ImageProcessorController";
 
 export default class ProcessQueue {
-  protected queue: Set<ImageController> = new Set();
+  protected queue: ImageController[] = [];
   protected _isFinished: boolean = false;
 
   public get isFinished(): boolean {
@@ -11,22 +11,21 @@ export default class ProcessQueue {
 
   public add(path: string): ImageController {
     const imageController: ImageController = new ImageController(path);
-    this.queue.add(imageController);
+    this.queue.push(imageController);
     this._isFinished = false;
 
     return imageController;
   }
 
   public remove(path: string): void {
-    this.queue.forEach((controller: ImageController): void => {
-      if (controller.originalImagePath === path) {
-        this.queue.delete(controller);
-      }
-    });
+    const itemIndexInQueue: number = this.queue.findIndex((controller: ImageController): boolean => controller.originalImagePath === path);
+
+    if (itemIndexInQueue !== -1)
+      this.queue.splice(itemIndexInQueue, 1);
   }
 
   public clear(): void {
-    this.queue.clear();
+    this.queue = [];
     this._isFinished = false;
   }
 
@@ -34,27 +33,22 @@ export default class ProcessQueue {
     if (this._isFinished)
       return;
 
-    const queueItems: Promise<ImageController>[] = [];
-    let err: Error = new Error();
+    const queueItemsToProcess: ImageController[] = this.queue.filter((controller: ImageController) => !controller.isProcessed);
 
-    this.queue.forEach((controller: ImageController): void => {
-      if (!controller.isProcessed) {
-        queueItems.push(ImageProcessor.process(controller));
-      }
-    });
-
-    Promise.all(queueItems)
+    Promise.all(
+      queueItemsToProcess.map(async (controller: ImageController): Promise<ImageController> => {
+        return ImageProcessorController.process(controller);
+      })
+    )
       .then((imageControllers: ImageController[]): void => {
         this._isFinished = true;
 
         if (cb !== undefined)
           cb(null, imageControllers);
       })
-      .catch(() => {
-        err.message = "There was an error processing your query!";
-
+      .catch((err) => {
         if (cb !== undefined)
-          cb(err, null);
+          cb(new Error(err.message), null);
       });
   }
 }
