@@ -8,6 +8,26 @@ var AppNavigationController = /** @class */ (function () {
         this.activeClass = "active";
         this.htmlLoadedClass = "loaded";
         this.screenSelector = ".app__screen";
+        this.setActiveIndex = function (index) {
+            _this.activeIndex = index;
+            _this.elements.forEach(function (elem, elemIndex) {
+                if (elemIndex === index)
+                    elem.classList.add(_this.activeClass);
+                else
+                    elem.classList.remove(_this.activeClass);
+            });
+        };
+        this.next = function () {
+            if (_this.activeIndex < (_this.elements.length - 1))
+                _this.setActiveIndex(_this.activeIndex + 1);
+        };
+        this.prev = function () {
+            if (_this.activeIndex > 0)
+                _this.setActiveIndex(_this.activeIndex - 1);
+        };
+        this.reset = function () {
+            _this.setActiveIndex(0);
+        };
         window.addEventListener("DOMContentLoaded", function () {
             var elements = document.querySelectorAll(_this.screenSelector);
             for (var _i = 0, _a = Array.from(elements); _i < _a.length; _i++) {
@@ -19,28 +39,8 @@ var AppNavigationController = /** @class */ (function () {
             document.documentElement.classList.add(_this.htmlLoadedClass);
         });
     }
-    AppNavigationController.prototype.setActiveIndex = function (index) {
-        var _this = this;
-        this.activeIndex = index;
-        this.elements.forEach(function (elem, elemIndex) {
-            if (elemIndex === index)
-                elem.classList.add(_this.activeClass);
-            else
-                elem.classList.remove(_this.activeClass);
-        });
-    };
-    AppNavigationController.prototype.next = function () {
-        if (this.activeIndex < (this.elements.length - 1))
-            this.setActiveIndex(this.activeIndex + 1);
-    };
-    AppNavigationController.prototype.prev = function () {
-        if (this.activeIndex > 0)
-            this.setActiveIndex(this.activeIndex - 1);
-    };
-    AppNavigationController.prototype.reset = function () {
-        this.setActiveIndex(0);
-    };
     return AppNavigationController;
 }());
-exports.default = AppNavigationController;
+var navController = new AppNavigationController;
+exports.default = navController;
 //# sourceMappingURL=AppNavigationController.js.map

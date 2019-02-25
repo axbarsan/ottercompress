@@ -1,8 +1,7 @@
-import { currentRenderer } from "../../";
-import ImageProcessController from "./ImageProcessController";
+type DialogCallback = (path: string | null) => void;
 
-export default class ImageDialog {
-  public static showParentFolderDialog(): void {
+export default class ImageDialogController {
+  public static showParentFolderDialog(cb: DialogCallback): void {
     const { dialog } = require("electron").remote;
 
     dialog.showOpenDialog({
@@ -17,11 +16,11 @@ export default class ImageDialog {
           ? folderPath[0]
           : null);
 
-      ImageDialog.sendEntryFolderEvent(pathToSend);
+      cb(pathToSend);
     });
   }
 
-  public static showTargetFolderDialog(): void {
+  public static showTargetFolderDialog(cb: DialogCallback): void {
     const { dialog } = require("electron").remote;
 
     dialog.showOpenDialog({
@@ -37,22 +36,7 @@ export default class ImageDialog {
           ? folderPath[0]
           : null);
 
-      ImageDialog.sendTargetFolderEvent(pathToSend);
-      ImageProcessController.handleQueue();
+      cb(pathToSend);
     });
-  }
-
-  public static sendEntryFolderEvent(folderPath: string | null): void {
-    const { ipcRenderer } = require("electron");
-
-    ipcRenderer.send("imgproc:select-parent-folder", folderPath);
-    currentRenderer.appNavController.next();
-  }
-
-  public static sendTargetFolderEvent(folderPath: string | null): void {
-    const { ipcRenderer } = require("electron");
-
-    ipcRenderer.send("imgproc:select-target-folder", folderPath);
-    currentRenderer.appNavController.next();
   }
 }

@@ -2,49 +2,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var ImagePickerController = /** @class */ (function () {
     function ImagePickerController() {
-        ImagePickerController.handleEvents();
+        window.addEventListener("DOMContentLoaded", function () {
+            ImagePickerController.fileListParent = document.querySelector(ImagePickerController.fileListSelector);
+        });
     }
-    ImagePickerController.handleEvents = function () {
-        var ipcRenderer = require("electron").ipcRenderer;
-        ipcRenderer.on("imgproc:queue:image-added", function (evt, imageData) {
-            ImagePickerController.images.push(imageData);
-            ImagePickerController.appendToHTML(imageData);
-        });
-        ipcRenderer.on("imgproc:queue:clear", function (evt) {
-            ImagePickerController.images.length = 0;
-            ImagePickerController.clearHTML();
-        });
-    };
-    ImagePickerController.appendToHTML = function (imageData) {
-        var fileListParent = document.querySelector(".image-process__filelist");
-        var parent;
-        if (fileListParent === null)
+    ImagePickerController.generateImageHTML = function (imageData) {
+        if (ImagePickerController.fileListParent === null)
             return;
-        var lastElement = fileListParent.lastElementChild;
-        if (lastElement === null) {
-            parent = document.createElement("div");
-            parent.className = "image-process__filelist__file";
-            fileListParent.appendChild(parent);
-        }
-        else {
-            var lastElemClone = lastElement.cloneNode(false);
-            fileListParent.appendChild(lastElemClone);
-            parent = fileListParent.lastElementChild;
-        }
         var convertedImage = imageData.data.toString("base64");
+        var wrapperElement = document.createElement("div");
+        wrapperElement.className = "image-process__filelist__file";
         var imgElement = document.createElement("img");
         imgElement.src = "data:image/jpeg;base64," + convertedImage;
-        parent.appendChild(imgElement);
+        wrapperElement.appendChild(imgElement);
+        ImagePickerController.fileListParent.appendChild(wrapperElement);
     };
     ImagePickerController.clearHTML = function () {
-        var fileListParent = document.querySelector(".image-process__filelist");
-        if (fileListParent === null)
+        if (ImagePickerController.fileListParent === null)
             return;
-        while (fileListParent.firstChild) {
-            fileListParent.removeChild(fileListParent.firstChild);
+        while (ImagePickerController.fileListParent.firstChild) {
+            ImagePickerController.fileListParent.removeChild(ImagePickerController.fileListParent.firstChild);
         }
     };
     ImagePickerController.images = [];
+    ImagePickerController.fileListSelector = ".image-process__filelist";
+    ImagePickerController.fileListParent = null;
     return ImagePickerController;
 }());
 exports.default = ImagePickerController;

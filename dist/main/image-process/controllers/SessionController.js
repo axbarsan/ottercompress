@@ -27,13 +27,21 @@ var SessionController = /** @class */ (function () {
             ImageProcessorController_1.default.targetPath = path;
         });
         ipcMain.on("imgproc:queue:start", function (evt) {
-            evt.sender.send("imgproc:queue:in-progress");
-            SessionController.startQueue();
+            if (SessionController.currentSession.parentPath !== null && SessionController.currentSession.targetPath !== null) {
+                evt.sender.send("imgproc:queue:in-progress");
+                SessionController.startQueue();
+            }
         });
     };
     SessionController.startQueue = function () {
+        var activeWindow = electron_1.BrowserWindow.getFocusedWindow();
         SessionController.currentSession.queue.process(function (err, imgControllers) {
-            console.log(err, imgControllers);
+            if (activeWindow === null)
+                return;
+            if (err !== null)
+                activeWindow.webContents.send("imgproc:queue:error", err);
+            if (imgControllers !== null)
+                activeWindow.webContents.send("imgproc:queue:done", imgControllers);
         });
     };
     SessionController.addImagesInFolder = function (path) {

@@ -31,15 +31,25 @@ export default class SessionController {
     });
 
     ipcMain.on("imgproc:queue:start", (evt: Electron.IpcMessageEvent) => {
-      evt.sender.send("imgproc:queue:in-progress");
-      SessionController.startQueue();
+      if (SessionController.currentSession.parentPath !== null && SessionController.currentSession.targetPath !== null) {
+        evt.sender.send("imgproc:queue:in-progress");
+        SessionController.startQueue();
+      }
     });
   }
 
   protected static startQueue(): void {
+    const activeWindow: BrowserWindow | null = BrowserWindow.getFocusedWindow();
     SessionController.currentSession.queue.process(
       (err: Error | null, imgControllers: ImageController[] | null): void => {
-        console.log(err, imgControllers);
+        if (activeWindow === null)
+          return;
+
+        if (err !== null)
+          activeWindow.webContents.send("imgproc:queue:error", err);
+
+        if (imgControllers !== null)
+          activeWindow.webContents.send("imgproc:queue:done", imgControllers);
       });
   }
 

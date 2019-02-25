@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var __1 = require("../../");
-var ImageProcessController_1 = require("./ImageProcessController");
-var ImageDialog = /** @class */ (function () {
-    function ImageDialog() {
+var ImageDialogController = /** @class */ (function () {
+    function ImageDialogController() {
     }
-    ImageDialog.showParentFolderDialog = function () {
+    ImageDialogController.showParentFolderDialog = function (cb) {
         var dialog = require("electron").remote.dialog;
         dialog.showOpenDialog({
             title: "Pick a folder with images in it",
@@ -17,10 +15,10 @@ var ImageDialog = /** @class */ (function () {
             var pathToSend = (folderPath !== undefined
                 ? folderPath[0]
                 : null);
-            ImageDialog.sendEntryFolderEvent(pathToSend);
+            cb(pathToSend);
         });
     };
-    ImageDialog.showTargetFolderDialog = function () {
+    ImageDialogController.showTargetFolderDialog = function (cb) {
         var dialog = require("electron").remote.dialog;
         dialog.showOpenDialog({
             title: "Pick a folder where to export the processed files",
@@ -33,21 +31,10 @@ var ImageDialog = /** @class */ (function () {
             var pathToSend = (folderPath !== undefined
                 ? folderPath[0]
                 : null);
-            ImageDialog.sendTargetFolderEvent(pathToSend);
-            ImageProcessController_1.default.handleQueue();
+            cb(pathToSend);
         });
     };
-    ImageDialog.sendEntryFolderEvent = function (folderPath) {
-        var ipcRenderer = require("electron").ipcRenderer;
-        ipcRenderer.send("imgproc:select-parent-folder", folderPath);
-        __1.currentRenderer.appNavController.next();
-    };
-    ImageDialog.sendTargetFolderEvent = function (folderPath) {
-        var ipcRenderer = require("electron").ipcRenderer;
-        ipcRenderer.send("imgproc:select-target-folder", folderPath);
-        __1.currentRenderer.appNavController.next();
-    };
-    return ImageDialog;
+    return ImageDialogController;
 }());
-exports.default = ImageDialog;
+exports.default = ImageDialogController;
 //# sourceMappingURL=ImageDialogController.js.map

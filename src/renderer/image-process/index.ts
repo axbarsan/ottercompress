@@ -1,9 +1,11 @@
-import ImageDialog from "./controllers/ImageDialogController";
-import ImagePickerController from "./controllers/ImagePickerController";
+import ImageDialogController from "./controllers/ImageDialogController";
+import ImagePicker from "./ImagePicker";
 import FileDraggingController from "./controllers/FileDraggingController";
+import ImageProcessEventHandler from "./ImageProcessEventHandler";
 
 export default class ImageProcessRendererModule {
-  protected imagePickerController: ImagePickerController = new ImagePickerController();
+  public imagePicker: ImagePicker = new ImagePicker(this);
+  public imageProcessEventHandler: ImageProcessEventHandler = new ImageProcessEventHandler(this);
 
   constructor() {
     window.addEventListener("DOMContentLoaded", () => {
@@ -11,15 +13,15 @@ export default class ImageProcessRendererModule {
 
       if (parentFolderSelectBtn !== null) {
         parentFolderSelectBtn.addEventListener("click", () => {
-          ImageDialog.showParentFolderDialog();
+          ImageDialogController.showParentFolderDialog(this.imageProcessEventHandler.sendEntryFolderEvent);
         });
 
         new FileDraggingController({
           element: parentFolderSelectBtn,
           activeClass: "active",
           isFolderOnly: true,
-          dropCallback: (folders: FileList) => {
-            ImageDialog.sendEntryFolderEvent(folders[0].path);
+          dropCallback: (folders: FileList): void => {
+            this.imageProcessEventHandler.sendEntryFolderEvent(folders[0].path);
           }
         });
       }
@@ -27,7 +29,7 @@ export default class ImageProcessRendererModule {
       const targetFolderSelectBtn: HTMLButtonElement | null = document.querySelector(".image-process__select--target button");
       if (targetFolderSelectBtn !== null) {
         targetFolderSelectBtn.addEventListener("click", () => {
-          ImageDialog.showTargetFolderDialog();
+          ImageDialogController.showTargetFolderDialog(this.imageProcessEventHandler.sendTargetFolderEvent);
         })
       }
     });

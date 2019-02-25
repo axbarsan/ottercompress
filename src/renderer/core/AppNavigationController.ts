@@ -1,4 +1,4 @@
-export default class AppNavigationController {
+class AppNavigationController {
   protected elements: HTMLElement[] = [];
   protected activeIndex: number = 0;
   protected activeClass: string = "active";
@@ -18,7 +18,7 @@ export default class AppNavigationController {
     });
   }
 
-  public setActiveIndex(index: number): void {
+  public setActiveIndex = (index: number): void => {
     this.activeIndex = index;
 
     this.elements.forEach((elem: HTMLElement, elemIndex: number): void => {
@@ -29,17 +29,21 @@ export default class AppNavigationController {
     });
   }
 
-  public next(): void {
+  public next = (): void => {
     if (this.activeIndex < (this.elements.length - 1))
       this.setActiveIndex(this.activeIndex + 1);
   }
 
-  public prev(): void {
+  public prev = (): void => {
     if (this.activeIndex > 0)
       this.setActiveIndex(this.activeIndex - 1);
   }
 
-  public reset(): void {
+  public reset = (): void => {
     this.setActiveIndex(0);
   }
 }
+
+const navController: AppNavigationController = new AppNavigationController;
+
+export default navController;

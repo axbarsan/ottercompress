@@ -1,14 +1,5 @@
-import ImageProcessRenderer from "./image-process/";
-import AppNavigationController from "./core/AppNavigationController";
+import ImageProcessModule from "./image-process/";
 
 export default class Renderer {
-  public appNavController: AppNavigationController;
-  public imageProcessRenderer: ImageProcessRenderer;
-
-  constructor() {
-    this.appNavController = new AppNavigationController();
-    this.imageProcessRenderer = new ImageProcessRenderer();
-  }
+  public static imageProcessModule: ImageProcessModule = new ImageProcessModule();
 }
-
-export const currentRenderer: Renderer = new Renderer();
