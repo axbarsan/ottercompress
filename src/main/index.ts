@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, screen } from "electron";
 import * as path from "path";
 import ImageProcessModule from "./image-process/";
 
@@ -24,17 +24,29 @@ export default class Application {
 
   private onReady() {
     this.mainWindow = new BrowserWindow({
-      height: 600,
-      width: 800,
+      height: 500,
+      width: 400,
       show: false,
+      resizable: false,
+      fullscreenable: false,
+      title: "Ottercompress",
+      titleBarStyle: "hidden",
+      maximizable: false,
+      backgroundColor: "#6d3580"
     });
 
     this.mainWindow
       .loadURL("file://" + path.join(__dirname, "../../index.html"));
 
     this.mainWindow.once('ready-to-show', () => {
-      if (this.mainWindow !== null)
-        this.mainWindow.show()
+      if (this.mainWindow !== null) {
+        const { x, y } = screen.getCursorScreenPoint();
+        const currentDisplay = screen.getDisplayNearestPoint({ x, y });
+
+        this.mainWindow.setPosition(currentDisplay.workArea.x, currentDisplay.workArea.y);
+        this.mainWindow.center();
+        this.mainWindow.show();
+      }
     })
 
     this.mainWindow.on("closed", this.onClose);

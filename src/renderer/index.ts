@@ -1,9 +1,12 @@
 import ImageProcessRenderer from "./image-process/";
+import AppNavigationController from "./core/AppNavigationController";
 
 export default class Renderer {
-  public imageProcessRenderer: ImageProcessRenderer | null = null;
+  public appNavController: AppNavigationController;
+  public imageProcessRenderer: ImageProcessRenderer;
 
   constructor() {
+    this.appNavController = new AppNavigationController();
     this.imageProcessRenderer = new ImageProcessRenderer();
   }
 }

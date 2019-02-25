@@ -1,7 +1,127 @@
-.image-process__filelist__file {
-  border: 2px solid #000;
+/* Colors: https://colorhunt.co/palette/139297 */
+
+@font-face {
+  font-family: "Raleway Light";
+  src: local("Raleway Light"), local("Raleway-Light"), url("./fonts/Raleway-Light.woff") format("woff");
 }
+
+html {
+  font-size: 9px;
+  user-select: none;
+  background: #6d3580;
+}
+
+html.loaded body {
+  opacity: 1!important;
+  transition: .5s ease-out 1s;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway Light";
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.text__underline {
+  text-decoration: underline;
+}
+
+.app__header {
+  height: 25px;
+  width: 100%;
+  z-index: 9999;
+  -webkit-app-region: drag;
+}
+
+.app__wrapper {
+  margin: 0 auto;
+  max-width: 400px;
+  overflow: hidden;
+  height: calc(100vh - 25px);
+  text-align: center;
+  position: relative;
+}
+
+.app__screen {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 2rem 0;
+  box-sizing: border-box;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: .5s ease-out;
+}
+
+.app__screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.image-process__drop-zone {
+  box-sizing: border-box;
+  padding: 3rem 4rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__drop-zone__label {
+  border-radius: 10px;
+  border: 3px dashed #d8d8d8;
+  box-sizing: border-box;
+  padding: 3rem 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  transition: .3s ease-out;
+}
+
+.image-process__drop-zone__label:hover, .image-process__drop-zone__label:active {
+  color: #ffe26f;
+  border-color: #ffe26f;
+}
+
+.image-process__drop-zone.active .image-process__drop-zone__label {
+  opacity: .3;
+}
+
+.image-process__filelist {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  height: 60vh;
+}
+
+.image-process__filelist__file {
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+}
+
 .image-process__filelist__file img {
-  max-width: 300px;
-  max-height: 300px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
 }

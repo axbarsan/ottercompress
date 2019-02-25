@@ -7,21 +7,31 @@
   <link rel="stylesheet" href="./static/style.css">
 </head>
 
-<body>
-  <div class="image-process__select--parent">
-    <button>Select a folder</button>
+<body style="opacity: 0;">
+  <div class="app__header"></div>
+  <div class="app__wrapper">
+    <div class="app__screen active">
+      <div class="image-process__drop-zone">
+        <div class="image-process__drop-zone__label">
+          <h1>Drag and drop a folder here or <span class="text__underline">browse</span></h1>
+        </div>
+      </div>
+    </div>
+    <div class="app__screen">
+      <div class="image-process__select--target">
+        <button>Select a target folder</button>
+      </div>
+      <div class="image-process__filelist">
+      </div>
+    </div>
+    <div class="app__screen">
+      <p>Loading...</p>
+    </div>
+    <div class="app__screen">
+      <p>Done!</p>
+    </div>
   </div>
-  <div class="image-process__select--target">
-    <button>Select a target folder</button>
-  </div>
-  <div class="image-process__action">
-    <button>Process</button>
-  </div>
-  <div class="image-process__filelist">
-  </div>
-
   <script>
-    // You can also require other files to run in this process
     require("./dist/renderer/index.js");
   </script>
 </body>

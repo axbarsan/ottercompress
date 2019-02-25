@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var __1 = require("../../");
+var ImageProcessController_1 = require("./ImageProcessController");
 var ImageDialog = /** @class */ (function () {
     function ImageDialog() {
     }
@@ -32,15 +34,18 @@ var ImageDialog = /** @class */ (function () {
                 ? folderPath[0]
                 : null);
             ImageDialog.sendTargetFolderEvent(pathToSend);
+            ImageProcessController_1.default.handleQueue();
         });
     };
     ImageDialog.sendEntryFolderEvent = function (folderPath) {
         var ipcRenderer = require("electron").ipcRenderer;
         ipcRenderer.send("imgproc:select-parent-folder", folderPath);
+        __1.currentRenderer.appNavController.next();
     };
     ImageDialog.sendTargetFolderEvent = function (folderPath) {
         var ipcRenderer = require("electron").ipcRenderer;
         ipcRenderer.send("imgproc:select-target-folder", folderPath);
+        __1.currentRenderer.appNavController.next();
     };
     return ImageDialog;
 }());

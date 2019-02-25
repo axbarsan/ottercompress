@@ -22,15 +22,26 @@ var Application = /** @class */ (function () {
     Application.prototype.onReady = function () {
         var _this = this;
         this.mainWindow = new electron_1.BrowserWindow({
-            height: 600,
-            width: 800,
+            height: 500,
+            width: 400,
             show: false,
+            resizable: false,
+            fullscreenable: false,
+            title: "Ottercompress",
+            titleBarStyle: "hidden",
+            maximizable: false,
+            backgroundColor: "#6d3580"
         });
         this.mainWindow
             .loadURL("file://" + path.join(__dirname, "../../index.html"));
         this.mainWindow.once('ready-to-show', function () {
-            if (_this.mainWindow !== null)
+            if (_this.mainWindow !== null) {
+                var _a = electron_1.screen.getCursorScreenPoint(), x = _a.x, y = _a.y;
+                var currentDisplay = electron_1.screen.getDisplayNearestPoint({ x: x, y: y });
+                _this.mainWindow.setPosition(currentDisplay.workArea.x, currentDisplay.workArea.y);
+                _this.mainWindow.center();
                 _this.mainWindow.show();
+            }
         });
         this.mainWindow.on("closed", this.onClose);
     };
