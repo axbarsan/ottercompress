@@ -25,7 +25,8 @@ var SessionController = (function () {
             ImageProcessorController_1.default.targetPath = path;
         });
         ipcMain.on("imgproc:queue:start", function (evt) {
-            if (SessionController.currentSession.parentPath !== null && SessionController.currentSession.targetPath !== null) {
+            if (SessionController.currentSession.parentPath !== null
+                && SessionController.currentSession.targetPath !== null) {
                 evt.sender.send("imgproc:queue:in-progress");
                 SessionController.startQueue();
             }

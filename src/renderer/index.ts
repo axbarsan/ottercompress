@@ -1,5 +1,9 @@
 import ImageProcessModule from "./image-process/";
 
-export default class Renderer {
-  public static imageProcessModule: ImageProcessModule = new ImageProcessModule();
+class Renderer {
+  public imageProcessModule: ImageProcessModule = new ImageProcessModule();
 }
+
+const renderer: Renderer = new Renderer();
+
+export default renderer;

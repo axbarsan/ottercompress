@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ImagePicker = (function () {
-    function ImagePicker(controller) {
+    function ImagePicker() {
         var _this = this;
-        this.controller = controller;
         this.images = [];
         this.fileListSelector = ".image-process__filelist";
         this.fileListParent = null;
@@ -14,10 +13,10 @@ var ImagePicker = (function () {
             _this.counterElement = document.querySelector(_this.counterSelector);
         });
     }
-    ImagePicker.prototype.generateImageHTML = function (imageData) {
-        if (this.fileListParent === null)
+    ImagePicker.prototype.generateImageHTML = function (image) {
+        if (this.fileListParent === null || image.data === null)
             return;
-        var convertedImage = imageData.data.toString("base64");
+        var convertedImage = image.data.toString("base64");
         var wrapperElement = document.createElement("div");
         wrapperElement.className = "image-process__filelist__file";
         var imgElement = document.createElement("img");

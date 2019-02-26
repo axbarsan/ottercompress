@@ -93,7 +93,6 @@ h1 {
   z-index: 1;
   opacity: 0;
   pointer-events: none;
-  transition: .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   transform: scale(.8);
 }
 
@@ -101,7 +100,6 @@ h1 {
   opacity: 1;
   pointer-events: all;
   transform: scale(1);
-  transition-delay: .5s;
 }
 
 .image-process__drop-zone {
@@ -176,6 +174,12 @@ h1 {
 .image-process__select--target {
   box-sizing: border-box;
   padding-bottom: 4rem;
+  opacity: 0;
+  transition: .3s ease-out;
+}
+
+.image-process__select--target.active {
+  opacity: 1;
 }
 
 .image-process__counter {

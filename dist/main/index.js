@@ -2,11 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
-var image_process_1 = require("./image-process/");
 var Application = (function () {
     function Application() {
         this.mainWindow = null;
-        this.imageProcessModule = new image_process_1.default();
         electron_1.app.on("window-all-closed", this.onWindowAllClosed.bind(this));
         electron_1.app.on("ready", this.onReady.bind(this));
         electron_1.app.on("activate", this.onReady.bind(this));

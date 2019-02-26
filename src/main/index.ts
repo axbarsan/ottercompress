@@ -1,10 +1,8 @@
 import { app, BrowserWindow, screen } from "electron";
 import * as path from "path";
-import ImageProcessModule from "./image-process/";
 
 export default class Application {
   protected mainWindow: BrowserWindow | null = null;
-  protected imageProcessModule: ImageProcessModule = new ImageProcessModule();
 
   constructor() {
     app.on("window-all-closed", this.onWindowAllClosed.bind(this));
