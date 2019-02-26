@@ -34,6 +34,7 @@ var AppNavigationController = /** @class */ (function () {
                 var elem = _a[_i];
                 _this.elements.push(elem);
             }
+            _this.reset();
         });
         window.addEventListener("load", function () {
             document.documentElement.classList.add(_this.htmlLoadedClass);

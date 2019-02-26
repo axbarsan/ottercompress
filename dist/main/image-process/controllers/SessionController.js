@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Session_1 = require("../datatypes/Session");
 var FilesController_1 = require("./FilesController");
-var electron_1 = require("electron");
 var ImageProcessorController_1 = require("./ImageProcessorController");
 var SessionController = /** @class */ (function () {
     function SessionController() {
         SessionController.setUpFileSelectEvents();
+        SessionController.clearQueue();
     }
     Object.defineProperty(SessionController.prototype, "session", {
         get: function () {
@@ -32,20 +32,25 @@ var SessionController = /** @class */ (function () {
                 SessionController.startQueue();
             }
         });
+        ipcMain.on("imgproc:queue:clear", function () {
+            SessionController.clearQueue();
+        });
     };
     SessionController.startQueue = function () {
-        var activeWindow = electron_1.BrowserWindow.getFocusedWindow();
-        SessionController.currentSession.queue.process(function (err, imgControllers) {
+        var _this = this;
+        var activeWindow = SessionController.getPrimaryWindow();
+        setImmediate(SessionController.currentSession.queue.process, function (err, imgControllers) {
             if (activeWindow === null)
                 return;
             if (err !== null)
                 activeWindow.webContents.send("imgproc:queue:error", err);
             if (imgControllers !== null)
                 activeWindow.webContents.send("imgproc:queue:done", imgControllers);
+            _this.currentSession.isFinished = true;
         });
     };
     SessionController.addImagesInFolder = function (path) {
-        var activeWindow = electron_1.BrowserWindow.getFocusedWindow();
+        var activeWindow = SessionController.getPrimaryWindow();
         var files = FilesController_1.default.getImagesInFolder(path);
         for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
             var file = files_1[_i];
@@ -56,10 +61,18 @@ var SessionController = /** @class */ (function () {
         }
     };
     SessionController.clearQueue = function () {
-        var activeWindow = electron_1.BrowserWindow.getFocusedWindow();
-        if (activeWindow !== null) {
-            activeWindow.webContents.send("imgproc:queue:clear");
-        }
+        this.currentSession.queue.clear();
+        SessionController.currentSession.parentPath = null;
+        SessionController.currentSession.targetPath = null;
+        ImageProcessorController_1.default.targetPath = null;
+        this.currentSession.isFinished = false;
+    };
+    SessionController.getPrimaryWindow = function () {
+        var BrowserWindow = require("electron").BrowserWindow;
+        var allWindows = BrowserWindow.getAllWindows();
+        if (allWindows.length > 0)
+            return allWindows[0];
+        return null;
     };
     SessionController.currentSession = new Session_1.default();
     return SessionController;

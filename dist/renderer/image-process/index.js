@@ -30,6 +30,9 @@ var ImageProcessRendererModule = /** @class */ (function () {
                     ImageDialogController_1.default.showTargetFolderDialog(_this.imageProcessEventHandler.sendTargetFolderEvent);
                 });
             }
+            var resetBtn = document.querySelector(".image-process__reset");
+            if (resetBtn !== null)
+                resetBtn.addEventListener("click", _this.imageProcessEventHandler.clearQueue);
         });
     }
     return ImageProcessRendererModule;

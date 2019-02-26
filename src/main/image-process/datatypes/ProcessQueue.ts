@@ -1,6 +1,8 @@
 import ImageController from "../controllers/ImageController";
 import ImageProcessorController from "../controllers/ImageProcessorController";
 
+type ProcessCallback = (error: Error | null, imagesControllers: ImageController[] | null) => void;
+
 export default class ProcessQueue {
   protected queue: ImageController[] = [];
   protected _isFinished: boolean = false;
@@ -29,7 +31,7 @@ export default class ProcessQueue {
     this._isFinished = false;
   }
 
-  public process(cb?: (error: Error | null, imagesControllers: ImageController[] | null) => void): void {
+  public process = (cb?: ProcessCallback): void => {
     if (this._isFinished)
       return;
 
@@ -50,5 +52,8 @@ export default class ProcessQueue {
         if (cb !== undefined)
           cb(new Error(err.message), null);
       });
+
+    // if (cb !== undefined)
+    //   cb(null, queueItemsToProcess);
   }
 }

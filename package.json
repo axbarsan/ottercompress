@@ -4,7 +4,7 @@
   "description": "Just an otter compressing some photos",
   "scripts": {
     "prestart": "tsc",
-    "start": "electron --debug ./dist/main.js"
+    "start": "electron --inspect=9229 ./dist/main.js"
   },
   "author": "axbarsan",
   "devDependencies": {

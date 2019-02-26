@@ -5,10 +5,13 @@ export default class ImagePicker {
   public readonly images: IImageData[] = [];
   protected fileListSelector: string = ".image-process__filelist";
   protected fileListParent: HTMLElement | null = null;
+  protected counterSelector: string = ".image-process__counter__label";
+  protected counterElement: HTMLElement | null = null;
 
   constructor(protected controller: ImageProcessRendererModule) {
     window.addEventListener("DOMContentLoaded", () => {
       this.fileListParent = document.querySelector(this.fileListSelector);
+      this.counterElement = document.querySelector(this.counterSelector);
     });
   }
 
@@ -23,6 +26,10 @@ export default class ImagePicker {
     const imgElement: HTMLImageElement = document.createElement("img");
     imgElement.src = `data:image/jpeg;base64,${convertedImage}`;
 
+    imgElement.addEventListener("load", () => {
+      imgElement.classList.add("loaded");
+    });
+
     wrapperElement.appendChild(imgElement);
     this.fileListParent.appendChild(wrapperElement);
   }
@@ -34,5 +41,12 @@ export default class ImagePicker {
     while (this.fileListParent.firstChild) {
       this.fileListParent.removeChild(this.fileListParent.firstChild);
     }
+  }
+
+  public updateCounter(): void {
+    if (this.counterElement === null)
+      return;
+
+    this.counterElement.textContent = String(this.images.length);
   }
 }

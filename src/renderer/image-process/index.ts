@@ -32,6 +32,10 @@ export default class ImageProcessRendererModule {
           ImageDialogController.showTargetFolderDialog(this.imageProcessEventHandler.sendTargetFolderEvent);
         })
       }
+
+      const resetBtn: HTMLButtonElement | null = document.querySelector(".image-process__reset");
+      if (resetBtn !== null)
+        resetBtn.addEventListener("click", this.imageProcessEventHandler.clearQueue);
     });
   }
 }

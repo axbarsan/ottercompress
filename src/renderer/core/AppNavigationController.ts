@@ -11,6 +11,8 @@ class AppNavigationController {
 
       for (const elem of Array.from(elements))
         this.elements.push(elem as HTMLElement);
+
+      this.reset();
     });
 
     window.addEventListener("load", () => {

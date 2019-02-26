@@ -13,11 +13,7 @@ export default class ImageProcessEventHandler {
     ipcRenderer.on("imgproc:queue:image-added", (evt: Electron.IpcMessageEvent, imageData: IImageData) => {
       this.controller.imagePicker.images.push(imageData);
       this.controller.imagePicker.generateImageHTML(imageData);
-    });
-
-    ipcRenderer.on("imgproc:queue:clear", () => {
-      this.controller.imagePicker.images.length = 0;
-      this.controller.imagePicker.clearHTML();
+      this.controller.imagePicker.updateCounter();
     });
 
     ipcRenderer.on("imgproc:queue:in-progress", AppNavigationController.next);
@@ -49,5 +45,11 @@ export default class ImageProcessEventHandler {
 
     if (folderPath !== null)
       this.handleQueue();
+  }
+
+  public clearQueue = (): void => {
+    this.controller.imagePicker.images.length = 0;
+    this.controller.imagePicker.clearHTML();
+    AppNavigationController.reset();
   }
 }

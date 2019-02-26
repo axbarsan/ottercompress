@@ -17,6 +17,11 @@ var ImageProcessEventHandler = /** @class */ (function () {
             if (folderPath !== null)
                 _this.handleQueue();
         };
+        this.clearQueue = function () {
+            _this.controller.imagePicker.images.length = 0;
+            _this.controller.imagePicker.clearHTML();
+            AppNavigationController_1.default.reset();
+        };
         this.handleEvents();
     }
     ImageProcessEventHandler.prototype.handleEvents = function () {
@@ -25,10 +30,7 @@ var ImageProcessEventHandler = /** @class */ (function () {
         ipcRenderer.on("imgproc:queue:image-added", function (evt, imageData) {
             _this.controller.imagePicker.images.push(imageData);
             _this.controller.imagePicker.generateImageHTML(imageData);
-        });
-        ipcRenderer.on("imgproc:queue:clear", function () {
-            _this.controller.imagePicker.images.length = 0;
-            _this.controller.imagePicker.clearHTML();
+            _this.controller.imagePicker.updateCounter();
         });
         ipcRenderer.on("imgproc:queue:in-progress", AppNavigationController_1.default.next);
         ipcRenderer.on("imgproc:queue:done", AppNavigationController_1.default.next);

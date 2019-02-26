@@ -7,8 +7,11 @@ var ImagePicker = /** @class */ (function () {
         this.images = [];
         this.fileListSelector = ".image-process__filelist";
         this.fileListParent = null;
+        this.counterSelector = ".image-process__counter__label";
+        this.counterElement = null;
         window.addEventListener("DOMContentLoaded", function () {
             _this.fileListParent = document.querySelector(_this.fileListSelector);
+            _this.counterElement = document.querySelector(_this.counterSelector);
         });
     }
     ImagePicker.prototype.generateImageHTML = function (imageData) {
@@ -19,6 +22,9 @@ var ImagePicker = /** @class */ (function () {
         wrapperElement.className = "image-process__filelist__file";
         var imgElement = document.createElement("img");
         imgElement.src = "data:image/jpeg;base64," + convertedImage;
+        imgElement.addEventListener("load", function () {
+            imgElement.classList.add("loaded");
+        });
         wrapperElement.appendChild(imgElement);
         this.fileListParent.appendChild(wrapperElement);
     };
@@ -28,6 +34,11 @@ var ImagePicker = /** @class */ (function () {
         while (this.fileListParent.firstChild) {
             this.fileListParent.removeChild(this.fileListParent.firstChild);
         }
+    };
+    ImagePicker.prototype.updateCounter = function () {
+        if (this.counterElement === null)
+            return;
+        this.counterElement.textContent = String(this.images.length);
     };
     return ImagePicker;
 }());

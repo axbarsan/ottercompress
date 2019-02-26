@@ -39,8 +39,30 @@ var ImageController_1 = require("../controllers/ImageController");
 var ImageProcessorController_1 = require("../controllers/ImageProcessorController");
 var ProcessQueue = /** @class */ (function () {
     function ProcessQueue() {
+        var _this = this;
         this.queue = [];
         this._isFinished = false;
+        this.process = function (cb) {
+            if (_this._isFinished)
+                return;
+            var queueItemsToProcess = _this.queue.filter(function (controller) { return !controller.isProcessed; });
+            Promise.all(queueItemsToProcess.map(function (controller) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, ImageProcessorController_1.default.process(controller)];
+                });
+            }); }))
+                .then(function (imageControllers) {
+                _this._isFinished = true;
+                if (cb !== undefined)
+                    cb(null, imageControllers);
+            })
+                .catch(function (err) {
+                if (cb !== undefined)
+                    cb(new Error(err.message), null);
+            });
+            // if (cb !== undefined)
+            //   cb(null, queueItemsToProcess);
+        };
     }
     Object.defineProperty(ProcessQueue.prototype, "isFinished", {
         get: function () {
@@ -63,26 +85,6 @@ var ProcessQueue = /** @class */ (function () {
     ProcessQueue.prototype.clear = function () {
         this.queue = [];
         this._isFinished = false;
-    };
-    ProcessQueue.prototype.process = function (cb) {
-        var _this = this;
-        if (this._isFinished)
-            return;
-        var queueItemsToProcess = this.queue.filter(function (controller) { return !controller.isProcessed; });
-        Promise.all(queueItemsToProcess.map(function (controller) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, ImageProcessorController_1.default.process(controller)];
-            });
-        }); }))
-            .then(function (imageControllers) {
-            _this._isFinished = true;
-            if (cb !== undefined)
-                cb(null, imageControllers);
-        })
-            .catch(function (err) {
-            if (cb !== undefined)
-                cb(new Error(err.message), null);
-        });
     };
     return ProcessQueue;
 }());

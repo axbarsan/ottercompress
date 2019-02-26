@@ -5,6 +5,10 @@
   src: local("Raleway Light"), local("Raleway-Light"), url("./fonts/Raleway-Light.woff") format("woff");
 }
 
+* {
+  outline: none;
+}
+
 html {
   font-size: 9px;
   user-select: none;
@@ -23,7 +27,7 @@ body {
   color: #fff;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
   line-height: 1.7;
   font-weight: 300;
 }
@@ -34,6 +38,32 @@ h1 {
 
 .text__underline {
   text-decoration: underline;
+}
+
+.button {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  border-radius: 3px;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: .2s ease-out;
+  padding: .8rem 2rem;
+}
+
+.button--primary {
+  background: #ffe26f;
+  color: #6d3580;
+}
+
+.button--primary:hover {
+  background: #e7cd63;
+}
+
+.button--primary:active {
+  background: #b8a24c;
 }
 
 .app__header {
@@ -63,12 +93,15 @@ h1 {
   z-index: 1;
   opacity: 0;
   pointer-events: none;
-  transition: .5s ease-out;
+  transition: .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: scale(.8);
 }
 
 .app__screen.active {
   opacity: 1;
   pointer-events: all;
+  transform: scale(1);
+  transition-delay: .5s;
 }
 
 .image-process__drop-zone {
@@ -82,7 +115,7 @@ h1 {
 
 .image-process__drop-zone__label {
   border-radius: 10px;
-  border: 3px dashed #d8d8d8;
+  border: 4px dashed #d8d8d8;
   box-sizing: border-box;
   padding: 3rem 4rem;
   display: flex;
@@ -109,6 +142,14 @@ h1 {
   align-content: flex-start;
   width: 100%;
   height: 60vh;
+  opacity: 0;
+  transition: .3s ease-out 1.2s;
+  overflow: hidden;
+}
+
+.app__screen.active .image-process__filelist {
+  opacity: 1;
+  transition-delay: 0;
 }
 
 .image-process__filelist__file {
@@ -118,10 +159,130 @@ h1 {
 }
 
 .image-process__filelist__file img {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   width: 100%;
   height: 100%;
   background: #fff;
+  opacity: 0;
+  transition: .3s;
+}
+
+.image-process__filelist__file img.loaded {
+  opacity: 1;
+}
+
+.image-process__select--target {
+  box-sizing: border-box;
+  padding-bottom: 4rem;
+}
+
+.image-process__counter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 18vh;
+  height: 28vh;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to bottom, rgba(109, 53, 128, 0) 0%, rgb(109, 53, 128) 65%);
+}
+
+.image-process__counter p {
+  font-size: 1.4rem;
+}
+
+.image-process__loading {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__loading__progress {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__loading__progress img, .image-process__loading__progress svg {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+
+.image-process__loading__label {
+  margin-top: 3rem;
+}
+
+.image-process__loading__label + .button {
+  position: absolute;
+  bottom: 7vh;
+}
+
+.checkmark {
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #e4734f;
+  opacity: 0;
+  transition: .3s ease-out;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #e4734f;
+  fill: none;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.app__screen.active .checkmark {
+  opacity: 1;
+  animation: fill .4s ease-in-out 1.4s forwards, scale .3s ease-in-out 1.9s both;
+}
+
+.app__screen.active .checkmark__circle {
+  animation: stroke .6s cubic-bezier(0.650, 0.000, 0.450, 1.000) 1s forwards;
+}
+
+.app__screen.active .checkmark__check {
+  animation: stroke .3s cubic-bezier(0.650, 0.000, 0.450, 1.000) 1.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #e4734f;
+  }
 }

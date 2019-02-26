@@ -1,7 +1,6 @@
 import Session from "../datatypes/Session";
 import FilesController from "./FilesController";
 import ImageController from "./ImageController";
-import { BrowserWindow } from "electron";
 import ImageProcessor from "./ImageProcessorController";
 
 export default class SessionController {
@@ -9,6 +8,7 @@ export default class SessionController {
 
   constructor() {
     SessionController.setUpFileSelectEvents();
+    SessionController.clearQueue();
   }
 
   public get session() {
@@ -36,11 +36,16 @@ export default class SessionController {
         SessionController.startQueue();
       }
     });
+
+    ipcMain.on("imgproc:queue:clear", () => {
+      SessionController.clearQueue();
+    });
   }
 
   protected static startQueue(): void {
-    const activeWindow: BrowserWindow | null = BrowserWindow.getFocusedWindow();
-    SessionController.currentSession.queue.process(
+    const activeWindow: Electron.BrowserWindow | null = SessionController.getPrimaryWindow();
+
+    setImmediate(SessionController.currentSession.queue.process,
       (err: Error | null, imgControllers: ImageController[] | null): void => {
         if (activeWindow === null)
           return;
@@ -50,12 +55,13 @@ export default class SessionController {
 
         if (imgControllers !== null)
           activeWindow.webContents.send("imgproc:queue:done", imgControllers);
+
+        this.currentSession.isFinished = true;
       });
   }
 
   protected static addImagesInFolder(path: string): void {
-    const activeWindow: BrowserWindow | null = BrowserWindow.getFocusedWindow();
-
+    const activeWindow: Electron.BrowserWindow | null = SessionController.getPrimaryWindow();
     const files: string[] = FilesController.getImagesInFolder(path);
 
     for (const file of files) {
@@ -70,10 +76,21 @@ export default class SessionController {
   }
 
   protected static clearQueue(): void {
-    const activeWindow: BrowserWindow | null = BrowserWindow.getFocusedWindow();
+    this.currentSession.queue.clear();
+    SessionController.currentSession.parentPath = null;
+    SessionController.currentSession.targetPath = null;
+    ImageProcessor.targetPath = null;
+    this.currentSession.isFinished = false;
+  }
 
-    if (activeWindow !== null) {
-      activeWindow.webContents.send("imgproc:queue:clear");
-    }
+  protected static getPrimaryWindow(): Electron.BrowserWindow | null {
+    const { BrowserWindow } = require("electron");
+
+    const allWindows: Electron.BrowserWindow[] = BrowserWindow.getAllWindows();
+
+    if (allWindows.length > 0)
+      return allWindows[0];
+
+    return null;
   }
 }
