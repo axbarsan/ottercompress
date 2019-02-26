@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ImageDialogController = /** @class */ (function () {
+var ImageDialogController = (function () {
     function ImageDialogController() {
     }
     ImageDialogController.showParentFolderDialog = function (cb) {

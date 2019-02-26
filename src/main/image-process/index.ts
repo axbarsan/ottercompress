@@ -1,9 +1,10 @@
 import SessionController from "./controllers/SessionController";
 
 export default class ImageProcessModule {
-  protected sessionController: SessionController | null = null;
+  protected sessionController: SessionController = new SessionController();
 
   constructor() {
-    this.sessionController = new SessionController();
+    SessionController.setUpFileSelectEvents();
+    SessionController.clearQueue();
   }
 }

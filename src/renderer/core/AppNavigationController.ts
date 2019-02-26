@@ -46,6 +46,6 @@ class AppNavigationController {
   }
 }
 
-const navController: AppNavigationController = new AppNavigationController;
+const navController: AppNavigationController = new AppNavigationController();
 
 export default navController;

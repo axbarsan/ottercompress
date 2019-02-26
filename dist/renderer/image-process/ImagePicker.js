@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ImagePicker = /** @class */ (function () {
+var ImagePicker = (function () {
     function ImagePicker(controller) {
         var _this = this;
         this.controller = controller;

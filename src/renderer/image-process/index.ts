@@ -1,6 +1,6 @@
+import FileDraggingController from "./controllers/FileDraggingController";
 import ImageDialogController from "./controllers/ImageDialogController";
 import ImagePicker from "./ImagePicker";
-import FileDraggingController from "./controllers/FileDraggingController";
 import ImageProcessEventHandler from "./ImageProcessEventHandler";
 
 export default class ImageProcessRendererModule {
@@ -16,7 +16,7 @@ export default class ImageProcessRendererModule {
           ImageDialogController.showParentFolderDialog(this.imageProcessEventHandler.sendEntryFolderEvent);
         });
 
-        new FileDraggingController({
+        const parentFolderDragging: FileDraggingController = new FileDraggingController({
           element: parentFolderSelectBtn,
           activeClass: "active",
           isFolderOnly: true,
@@ -26,11 +26,12 @@ export default class ImageProcessRendererModule {
         });
       }
 
-      const targetFolderSelectBtn: HTMLButtonElement | null = document.querySelector(".image-process__select--target button");
+      const targetFolderSelectBtn: HTMLButtonElement | null =
+        document.querySelector(".image-process__select--target button");
       if (targetFolderSelectBtn !== null) {
         targetFolderSelectBtn.addEventListener("click", () => {
           ImageDialogController.showTargetFolderDialog(this.imageProcessEventHandler.sendTargetFolderEvent);
-        })
+        });
       }
 
       const resetBtn: HTMLButtonElement | null = document.querySelector(".image-process__reset");

@@ -28,7 +28,7 @@ export default class FileDraggingController {
       this.setActiveToggle.call(this, false);
 
       return false;
-    }
+    };
   }
 
   protected setActiveToggle(on: boolean): boolean {

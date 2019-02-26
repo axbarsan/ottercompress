@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Image_1 = require("../datatypes/Image");
-var ImageController = /** @class */ (function () {
+var Image_1 = require("../Image");
+var ImageController = (function () {
     function ImageController(originalImagePath) {
         this.originalImagePath = originalImagePath;
         this._processedImage = null;

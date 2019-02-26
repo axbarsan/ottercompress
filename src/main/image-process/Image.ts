@@ -1,5 +1,5 @@
-import IImageData from "../../../interfaces/IImageData";
-import FilesController from "../controllers/FilesController";
+import IImageData from "../../interfaces/IImageData";
+import FilesController from "./controllers/FilesController";
 
 export default class Image {
   protected _isRead: boolean = false;
@@ -19,7 +19,7 @@ export default class Image {
         extension: FilesController.getFileExtension(this.path),
         size: stat.size,
         data
-      }
+      };
 
       this._isRead = true;
     }

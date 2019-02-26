@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Jimp = require("jimp");
-var ImageProcessorController = /** @class */ (function () {
+var ImageProcessorController = (function () {
     function ImageProcessorController() {
     }
     ImageProcessorController.process = function (imageController) {
@@ -46,22 +46,22 @@ var ImageProcessorController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (imageController.isProcessed)
-                            return [2 /*return*/, imageController];
+                            return [2, imageController];
                         path = require("path");
                         imageData = imageController.originalImage.imageData;
                         if (imageData === null || ImageProcessorController.targetPath === null)
                             throw new Error("Image not read correctly");
                         newFileName = "" + imageData.filename + imageData.extension;
                         targetPath = path.join(ImageProcessorController.targetPath, newFileName);
-                        return [4 /*yield*/, Jimp.read(imageData.data)];
+                        return [4, Jimp.read(imageData.data)];
                     case 1:
                         image = _a.sent();
                         ImageProcessorController.addProcessSettings(image);
-                        return [4 /*yield*/, image.getBufferAsync(image.getMIME())];
+                        return [4, image.getBufferAsync(image.getMIME())];
                     case 2:
                         imgData = _a.sent();
                         imageController.processedImage = imgData;
-                        return [2 /*return*/, image.writeAsync(targetPath)
+                        return [2, image.writeAsync(targetPath)
                                 .then(function () {
                                 return imageController;
                             })];

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var AppNavigationController = /** @class */ (function () {
+var AppNavigationController = (function () {
     function AppNavigationController() {
         var _this = this;
         this.elements = [];
@@ -42,6 +42,6 @@ var AppNavigationController = /** @class */ (function () {
     }
     return AppNavigationController;
 }());
-var navController = new AppNavigationController;
+var navController = new AppNavigationController();
 exports.default = navController;
 //# sourceMappingURL=AppNavigationController.js.map

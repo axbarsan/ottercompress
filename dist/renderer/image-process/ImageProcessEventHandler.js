@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AppNavigationController_1 = require("../core/AppNavigationController");
-var ImageProcessEventHandler = /** @class */ (function () {
+var ImageProcessEventHandler = (function () {
     function ImageProcessEventHandler(controller) {
         var _this = this;
         this.controller = controller;

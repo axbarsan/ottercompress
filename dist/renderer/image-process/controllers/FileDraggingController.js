@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var FileDraggingController = /** @class */ (function () {
+var FileDraggingController = (function () {
     function FileDraggingController(config) {
         this.config = config;
         this.addEvents();

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var FilesController = /** @class */ (function () {
+var FilesController = (function () {
     function FilesController() {
     }
     FilesController.getImagesInFolder = function (folderPath) {
@@ -14,10 +14,8 @@ var FilesController = /** @class */ (function () {
             if (stat.isDirectory()) {
                 _this.getImagesInFolder(filename);
             }
-            else if (FilesController.fileHasValidExtension(filename)) {
+            else if (FilesController.fileHasValidExtension(filename))
                 files.push(filename);
-            }
-            ;
         });
         return files;
     };

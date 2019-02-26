@@ -1,4 +1,4 @@
-import Image from "../datatypes/Image";
+import Image from "../Image";
 
 export default class ImageController {
   protected _originalImage: Image;

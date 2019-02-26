@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var image_process_1 = require("./image-process/");
-var Renderer = /** @class */ (function () {
+var Renderer = (function () {
     function Renderer() {
     }
     Renderer.imageProcessModule = new image_process_1.default();

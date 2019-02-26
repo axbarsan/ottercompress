@@ -1,15 +1,10 @@
-import Session from "../datatypes/Session";
+import Session from "../Session";
 import FilesController from "./FilesController";
 import ImageController from "./ImageController";
 import ImageProcessor from "./ImageProcessorController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
-
-  constructor() {
-    SessionController.setUpFileSelectEvents();
-    SessionController.clearQueue();
-  }
 
   public get session() {
     return SessionController.currentSession;
@@ -31,7 +26,8 @@ export default class SessionController {
     });
 
     ipcMain.on("imgproc:queue:start", (evt: Electron.IpcMessageEvent) => {
-      if (SessionController.currentSession.parentPath !== null && SessionController.currentSession.targetPath !== null) {
+      if (SessionController.currentSession.parentPath !== null
+        && SessionController.currentSession.targetPath !== null) {
         evt.sender.send("imgproc:queue:in-progress");
         SessionController.startQueue();
       }
@@ -42,14 +38,14 @@ export default class SessionController {
     });
   }
 
-  protected static startQueue(): void {
+  public static startQueue(): void {
     const activeWindow: Electron.BrowserWindow | null = SessionController.getPrimaryWindow();
 
-    setImmediate(SessionController.currentSession.queue.process,
-      (err: Error | null, imgControllers: ImageController[] | null): void => {
-        if (activeWindow === null)
-          return;
+    if (activeWindow === null)
+      return;
 
+    SessionController.currentSession.queue.process(
+      (err: Error | null, imgControllers: ImageController[] | null): void => {
         if (err !== null)
           activeWindow.webContents.send("imgproc:queue:error", err);
 
@@ -60,7 +56,7 @@ export default class SessionController {
       });
   }
 
-  protected static addImagesInFolder(path: string): void {
+  public static addImagesInFolder(path: string): void {
     const activeWindow: Electron.BrowserWindow | null = SessionController.getPrimaryWindow();
     const files: string[] = FilesController.getImagesInFolder(path);
 
@@ -75,7 +71,7 @@ export default class SessionController {
     }
   }
 
-  protected static clearQueue(): void {
+  public static clearQueue(): void {
     this.currentSession.queue.clear();
     SessionController.currentSession.parentPath = null;
     SessionController.currentSession.targetPath = null;
@@ -83,7 +79,7 @@ export default class SessionController {
     this.currentSession.isFinished = false;
   }
 
-  protected static getPrimaryWindow(): Electron.BrowserWindow | null {
+  public static getPrimaryWindow(): Electron.BrowserWindow | null {
     const { BrowserWindow } = require("electron");
 
     const allWindows: Electron.BrowserWindow[] = BrowserWindow.getAllWindows();

@@ -1,6 +1,6 @@
-import ImageController from "./ImageController";
-import IImageData from "../../../interfaces/IImageData";
 import * as Jimp from "jimp";
+import IImageData from "../../../interfaces/IImageData";
+import ImageController from "./ImageController";
 
 export default class ImageProcessorController {
   public static targetPath: string | null = null;

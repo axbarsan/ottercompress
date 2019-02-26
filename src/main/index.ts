@@ -4,12 +4,12 @@ import ImageProcessModule from "./image-process/";
 
 export default class Application {
   protected mainWindow: BrowserWindow | null = null;
-  protected imageProcessModule: ImageProcessModule | null = null;
+  protected imageProcessModule: ImageProcessModule = new ImageProcessModule();
 
   constructor() {
     app.on("window-all-closed", this.onWindowAllClosed.bind(this));
     app.on("ready", this.onReady.bind(this));
-    this.imageProcessModule = new ImageProcessModule();
+    app.on("activate", this.onReady.bind(this));
   }
 
   private onWindowAllClosed() {
@@ -38,7 +38,7 @@ export default class Application {
     this.mainWindow
       .loadURL("file://" + path.join(__dirname, "../../index.html"));
 
-    this.mainWindow.once('ready-to-show', () => {
+    this.mainWindow.once("ready-to-show", () => {
       if (this.mainWindow !== null) {
         const { x, y } = screen.getCursorScreenPoint();
         const currentDisplay = screen.getDisplayNearestPoint({ x, y });
@@ -47,7 +47,7 @@ export default class Application {
         this.mainWindow.center();
         this.mainWindow.show();
       }
-    })
+    });
 
     this.mainWindow.on("closed", this.onClose);
   }

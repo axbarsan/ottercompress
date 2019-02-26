@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Session_1 = require("../datatypes/Session");
+var Session_1 = require("../Session");
 var FilesController_1 = require("./FilesController");
 var ImageProcessorController_1 = require("./ImageProcessorController");
-var SessionController = /** @class */ (function () {
+var SessionController = (function () {
     function SessionController() {
-        SessionController.setUpFileSelectEvents();
-        SessionController.clearQueue();
     }
     Object.defineProperty(SessionController.prototype, "session", {
         get: function () {
@@ -39,9 +37,9 @@ var SessionController = /** @class */ (function () {
     SessionController.startQueue = function () {
         var _this = this;
         var activeWindow = SessionController.getPrimaryWindow();
-        setImmediate(SessionController.currentSession.queue.process, function (err, imgControllers) {
-            if (activeWindow === null)
-                return;
+        if (activeWindow === null)
+            return;
+        SessionController.currentSession.queue.process(function (err, imgControllers) {
             if (err !== null)
                 activeWindow.webContents.send("imgproc:queue:error", err);
             if (imgControllers !== null)

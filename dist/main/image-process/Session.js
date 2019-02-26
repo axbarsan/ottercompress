@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ProcessQueue_1 = require("./ProcessQueue");
-var Session = /** @class */ (function () {
+var Session = (function () {
     function Session() {
         this.dateStarted = new Date();
         this.dateFinished = null;

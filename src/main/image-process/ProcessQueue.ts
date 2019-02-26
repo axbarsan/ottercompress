@@ -1,5 +1,5 @@
-import ImageController from "../controllers/ImageController";
-import ImageProcessorController from "../controllers/ImageProcessorController";
+import ImageController from "./controllers/ImageController";
+import ImageProcessorController from "./controllers/ImageProcessorController";
 
 type ProcessCallback = (error: Error | null, imagesControllers: ImageController[] | null) => void;
 
@@ -20,7 +20,8 @@ export default class ProcessQueue {
   }
 
   public remove(path: string): void {
-    const itemIndexInQueue: number = this.queue.findIndex((controller: ImageController): boolean => controller.originalImagePath === path);
+    const itemIndexInQueue: number = this.queue.findIndex(
+      (controller: ImageController): boolean => controller.originalImagePath === path);
 
     if (itemIndexInQueue !== -1)
       this.queue.splice(itemIndexInQueue, 1);
@@ -31,11 +32,12 @@ export default class ProcessQueue {
     this._isFinished = false;
   }
 
-  public process = (cb?: ProcessCallback): void => {
+  public process(cb?: ProcessCallback): void {
     if (this._isFinished)
       return;
 
-    const queueItemsToProcess: ImageController[] = this.queue.filter((controller: ImageController) => !controller.isProcessed);
+    const queueItemsToProcess: ImageController[] =
+      this.queue.filter((controller: ImageController) => !controller.isProcessed);
 
     Promise.all(
       queueItemsToProcess.map(async (controller: ImageController): Promise<ImageController> => {
@@ -52,8 +54,5 @@ export default class ProcessQueue {
         if (cb !== undefined)
           cb(new Error(err.message), null);
       });
-
-    // if (cb !== undefined)
-    //   cb(null, queueItemsToProcess);
   }
 }

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var FileDraggingController_1 = require("./controllers/FileDraggingController");
 var ImageDialogController_1 = require("./controllers/ImageDialogController");
 var ImagePicker_1 = require("./ImagePicker");
-var FileDraggingController_1 = require("./controllers/FileDraggingController");
 var ImageProcessEventHandler_1 = require("./ImageProcessEventHandler");
-var ImageProcessRendererModule = /** @class */ (function () {
+var ImageProcessRendererModule = (function () {
     function ImageProcessRendererModule() {
         var _this = this;
         this.imagePicker = new ImagePicker_1.default(this);
@@ -15,7 +15,7 @@ var ImageProcessRendererModule = /** @class */ (function () {
                 parentFolderSelectBtn.addEventListener("click", function () {
                     ImageDialogController_1.default.showParentFolderDialog(_this.imageProcessEventHandler.sendEntryFolderEvent);
                 });
-                new FileDraggingController_1.default({
+                var parentFolderDragging = new FileDraggingController_1.default({
                     element: parentFolderSelectBtn,
                     activeClass: "active",
                     isFolderOnly: true,

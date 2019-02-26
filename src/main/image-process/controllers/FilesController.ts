@@ -12,10 +12,8 @@ export default class FilesController {
 
       if (stat.isDirectory()) {
         this.getImagesInFolder(filename);
-      }
-      else if (FilesController.fileHasValidExtension(filename)) {
+      } else if (FilesController.fileHasValidExtension(filename))
         files.push(filename);
-      };
     });
 
     return files;

@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
 var image_process_1 = require("./image-process/");
-var Application = /** @class */ (function () {
+var Application = (function () {
     function Application() {
         this.mainWindow = null;
-        this.imageProcessModule = null;
+        this.imageProcessModule = new image_process_1.default();
         electron_1.app.on("window-all-closed", this.onWindowAllClosed.bind(this));
         electron_1.app.on("ready", this.onReady.bind(this));
-        this.imageProcessModule = new image_process_1.default();
+        electron_1.app.on("activate", this.onReady.bind(this));
     }
     Application.prototype.onWindowAllClosed = function () {
         if (process.platform !== "darwin") {
@@ -34,7 +34,7 @@ var Application = /** @class */ (function () {
         });
         this.mainWindow
             .loadURL("file://" + path.join(__dirname, "../../index.html"));
-        this.mainWindow.once('ready-to-show', function () {
+        this.mainWindow.once("ready-to-show", function () {
             if (_this.mainWindow !== null) {
                 var _a = electron_1.screen.getCursorScreenPoint(), x = _a.x, y = _a.y;
                 var currentDisplay = electron_1.screen.getDisplayNearestPoint({ x: x, y: y });
