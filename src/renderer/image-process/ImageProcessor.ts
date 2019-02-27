@@ -1,40 +1,38 @@
 import Image from "./Image";
 
-class ImageProcessor {
+export default class ImageProcessor {
   public static async process(targetPath: string, image: Image): Promise<Image> {
     if (image.isProcessed)
       return image;
 
-    const path = require("electron").remote.require("path");
-    const sharpModule = require("sharp");
+    const remote = require("electron").remote;
+    const path = remote.require("path");
+    const sharp = remote.require("sharp");
 
     const newFileName: string = `${image.filename}${image.extension}`;
     const targetFilePath: string = path.join(targetPath, newFileName);
 
-    const sharpImage = sharpModule(image.data);
-    // ImageProcessor.addProcessSettings(jimpImage);
-    image.processedData = await sharpImage.toBuffer();
+    const sharpImage = await sharp(image.data);
+    // ImageProcessor.addProcessSettings(sharpImage, image.extension);
     await sharpImage.toFile(targetFilePath);
 
     return image;
   }
 
-  public static addProcessSettings(): void {
-    // const mimeType: string = image.getMIME();
-
-    // switch (mimeType) {
-    //   case Jimp.MIME_JPEG:
-    //     image.quality(60);
-    //     break;
-    //   case Jimp.MIME_PNG:
-    //     image.deflateLevel(9);
-    //     image.filterType(Jimp.PNG_FILTER_PATH);
-    //     image.deflateStrategy(3);
-    //     break;
-    // }
+  public static addProcessSettings(imgProcess: any, extension: string): void {
+    switch (extension) {
+      case ".jpg":
+      case ".jpeg":
+        imgProcess.jpeg({
+          quality: 50,
+          chromaSubsampling: "4:4:4"
+        });
+        break;
+      case ".png":
+        imgProcess.png({
+          quality: 50
+        });
+        break;
+    }
   }
 }
-
-module.exports = {
-  process: ImageProcessor.process
-};
