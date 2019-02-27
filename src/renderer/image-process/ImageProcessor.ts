@@ -14,14 +14,10 @@ export default class ImageProcessor {
 
     const jimpImage: Jimp = await jimpModule.read(image.data);
     ImageProcessor.addProcessSettings(jimpImage);
+    image.processedData = await jimpImage.getBufferAsync(jimpImage.getMIME());
+    await jimpImage.writeAsync(targetFilePath);
 
-    const imgData: Buffer = await jimpImage.getBufferAsync(jimpImage.getMIME());
-    image.processedData = imgData;
-
-    return jimpImage.writeAsync(targetFilePath)
-      .then(() => {
-        return image;
-      });
+    return image;
   }
 
   public static addProcessSettings(image: Jimp): void {

@@ -1,8 +1,6 @@
 import Image from "./Image";
 import ImageProcessor from "./ImageProcessor";
 
-type ProcessCallback = (error: Error | null, image: Image[] | null) => void;
-
 export default class ProcessQueue {
   protected queue: Image[] = [];
   protected _isFinished: boolean = false;
@@ -32,32 +30,16 @@ export default class ProcessQueue {
     this._isFinished = false;
   }
 
-  public process(targetPath: string, cb?: ProcessCallback): void {
-    if (this._isFinished)
-      return;
-
+  public async process(targetPath: string): Promise<Image[]> {
     const queueItemsToProcess: Image[] =
       this.queue.filter((image: Image) => !image.isProcessed);
 
-    Promise.all(
+    await Promise.all(
       queueItemsToProcess.map(async (image: Image): Promise<Image> => {
         return ImageProcessor.process(targetPath, image);
       })
-    )
-      .then((images: Image[]): void => {
-        this._isFinished = true;
+    );
 
-        if (cb !== undefined)
-          cb(null, images);
-      })
-      .catch((err) => {
-        if (cb !== undefined)
-          cb(new Error(err.message), null);
-      });
-
-    // setTimeout(() => {
-    //   if (cb !== undefined)
-    //     cb(null, this.queue);
-    // }, 2000);
+    return queueItemsToProcess;
   }
 }

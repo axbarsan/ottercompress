@@ -16,7 +16,7 @@ export default class Image {
   }
 
   public set processedData(data: Buffer | null) {
-    this.processedData = data;
+    this._processedData = data;
     this._isProcessed = true;
   }
 }

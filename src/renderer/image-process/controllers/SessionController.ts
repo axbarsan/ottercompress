@@ -19,17 +19,18 @@ export default class SessionController {
     return images;
   }
 
-  public static startQueue(): void {
-    const { targetPath, parentPath } = SessionController.currentSession;
+  public static async startQueue(): Promise<null> {
+    const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
 
-    if (parentPath === null || targetPath === null)
-      return;
+    if (parentPath === null || targetPath === null || imageQueue.isFinished)
+      return null;
 
-    SessionController.currentSession.imageQueue.process(targetPath,
-      (err: Error | null, images: Image[] | null): void => {
-        SessionController.currentSession.dateFinished = new Date();
-        AppNavigationController.next();
-      });
+    await SessionController.currentSession.imageQueue.process(targetPath);
+
+    SessionController.currentSession.dateFinished = new Date();
+    await AppNavigationController.next();
+
+    return null;
   }
 
   public static clearQueue(): void {
