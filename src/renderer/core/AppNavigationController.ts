@@ -25,8 +25,8 @@ class AppNavigationController {
     });
   }
 
-  public setActiveIndex = (index: number): Promise<null> => {
-    return new Promise((resolve: (value: null) => void) => {
+  public setActiveIndex = (index: number): Promise<void> => {
+    return new Promise((resolve: () => void) => {
       this.activeIndex = index;
 
       this.elements.forEach((elem: HTMLElement, elemIndex: number): void => {
@@ -35,7 +35,7 @@ class AppNavigationController {
           this.setTransitionDelay(elem, this.animationDuration);
 
           setTimeout(() => {
-            resolve(null);
+            resolve();
           }, this.animationDuration);
         } else {
           elem.classList.remove(this.activeClass);
@@ -45,24 +45,18 @@ class AppNavigationController {
     });
   }
 
-  public next = async (): Promise<null> => {
+  public next = async (): Promise<void> => {
     if (this.activeIndex < (this.elements.length - 1))
       await this.setActiveIndex(this.activeIndex + 1);
-
-    return null;
   }
 
-  public prev = async (): Promise<null> => {
+  public prev = async (): Promise<void> => {
     if (this.activeIndex > 0)
       await this.setActiveIndex(this.activeIndex - 1);
-
-    return null;
   }
 
-  public reset = async (): Promise<null> => {
+  public reset = async (): Promise<void> => {
     await this.setActiveIndex(0);
-
-    return null;
   }
 
   protected setTransitionDelay(element: HTMLElement, amount: number): void {

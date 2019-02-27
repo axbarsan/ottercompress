@@ -19,11 +19,11 @@ export default class SessionController {
     return images;
   }
 
-  public static async startQueue(): Promise<null> {
+  public static async startQueue(): Promise<void> {
     const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
 
     if (parentPath === null || targetPath === null || imageQueue.isFinished)
-      return null;
+      return;
 
     try {
       await SessionController.currentSession.imageQueue.process(targetPath);
@@ -35,8 +35,6 @@ export default class SessionController {
 
     SessionController.currentSession.dateFinished = new Date();
     await AppNavigationController.next();
-
-    return null;
   }
 
   public static clearQueue(): void {
@@ -44,7 +42,7 @@ export default class SessionController {
     AppNavigationController.reset();
   }
 
-  public static setParentFolder = async (folderPath: string | null): Promise<null> => {
+  public static setParentFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.parentPath = folderPath;
 
     if (folderPath !== null) {
@@ -52,18 +50,14 @@ export default class SessionController {
       await SessionController.addImagesInFolder(folderPath);
       SessionController.currentSession.imageGallery.setTargetBrowserVisibleState(true);
     }
-
-    return null;
   }
 
-  public static setTargetFolder = async (folderPath: string | null): Promise<null> => {
+  public static setTargetFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.targetPath = folderPath;
 
     if (folderPath !== null) {
       await AppNavigationController.next();
       SessionController.startQueue();
     }
-
-    return null;
   }
 }

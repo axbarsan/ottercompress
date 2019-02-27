@@ -52,7 +52,7 @@ var AppNavigationController = (function () {
                         elem.classList.add(_this.activeClass);
                         _this.setTransitionDelay(elem, _this.animationDuration);
                         setTimeout(function () {
-                            resolve(null);
+                            resolve();
                         }, _this.animationDuration);
                     }
                     else {
@@ -71,7 +71,7 @@ var AppNavigationController = (function () {
                     case 1:
                         _a.sent();
                         _a.label = 2;
-                    case 2: return [2, null];
+                    case 2: return [2];
                 }
             });
         }); };
@@ -84,7 +84,7 @@ var AppNavigationController = (function () {
                     case 1:
                         _a.sent();
                         _a.label = 2;
-                    case 2: return [2, null];
+                    case 2: return [2];
                 }
             });
         }); };
@@ -94,7 +94,7 @@ var AppNavigationController = (function () {
                     case 0: return [4, this.setActiveIndex(0)];
                     case 1:
                         _a.sent();
-                        return [2, null];
+                        return [2];
                 }
             });
         }); };
