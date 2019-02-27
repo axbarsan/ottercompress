@@ -1,5 +1,4 @@
 import Image from "./Image";
-import ImageProcessor from "./ImageProcessor";
 
 export default class ProcessQueue {
   protected queue: Image[] = [];
@@ -34,11 +33,10 @@ export default class ProcessQueue {
     const queueItemsToProcess: Image[] =
       this.queue.filter((image: Image) => !image.isProcessed);
 
-    await Promise.all(
-      queueItemsToProcess.map(async (image: Image): Promise<Image> => {
-        return ImageProcessor.process(targetPath, image);
-      })
-    );
+    const { requireTaskPool } = require("electron-remote");
+    const ImageProcessor = requireTaskPool(require.resolve("./ImageProcessor"), 4, 200);
+
+    await Promise.all(queueItemsToProcess.map((image: Image) => ImageProcessor.process(targetPath, image)));
 
     return queueItemsToProcess;
   }

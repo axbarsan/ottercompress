@@ -1,6 +1,6 @@
 import Image from "./Image";
 
-export default class ImageProcessor {
+class ImageProcessor {
   public static async process(targetPath: string, image: Image): Promise<Image> {
     if (image.isProcessed)
       return image;
@@ -34,3 +34,7 @@ export default class ImageProcessor {
     // }
   }
 }
+
+module.exports = {
+  process: ImageProcessor.process
+};

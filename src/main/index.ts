@@ -1,10 +1,15 @@
 import { app, BrowserWindow, screen } from "electron";
 import * as path from "path";
+import * as process from "process";
 
 export default class Application {
   protected mainWindow: BrowserWindow | null = null;
 
   constructor() {
+    process.on("uncaughtException", () => {
+      // App crashed
+    });
+
     app.on("window-all-closed", this.onWindowAllClosed.bind(this));
     app.on("ready", this.onReady.bind(this));
     app.on("activate", this.onReady.bind(this));
@@ -30,7 +35,10 @@ export default class Application {
       title: "Ottercompress",
       titleBarStyle: "hidden",
       maximizable: false,
-      backgroundColor: "#6d3580"
+      backgroundColor: "#6d3580",
+      webPreferences: {
+        nodeIntegration: true
+      }
     });
 
     this.mainWindow
@@ -48,5 +56,13 @@ export default class Application {
     });
 
     this.mainWindow.on("closed", this.onClose);
+
+    this.mainWindow.on("unresponsive", (): void => {
+      // App is unresponsive
+    });
+
+    this.mainWindow.webContents.on("crashed", (): void => {
+      // App crashed
+    });
   }
 }

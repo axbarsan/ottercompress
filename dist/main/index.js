@@ -2,9 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
+var process = require("process");
 var Application = (function () {
     function Application() {
         this.mainWindow = null;
+        process.on("uncaughtException", function () {
+        });
         electron_1.app.on("window-all-closed", this.onWindowAllClosed.bind(this));
         electron_1.app.on("ready", this.onReady.bind(this));
         electron_1.app.on("activate", this.onReady.bind(this));
@@ -28,7 +31,10 @@ var Application = (function () {
             title: "Ottercompress",
             titleBarStyle: "hidden",
             maximizable: false,
-            backgroundColor: "#6d3580"
+            backgroundColor: "#6d3580",
+            webPreferences: {
+                nodeIntegration: true
+            }
         });
         this.mainWindow
             .loadURL("file://" + path.join(__dirname, "../../index.html"));
@@ -42,6 +48,10 @@ var Application = (function () {
             }
         });
         this.mainWindow.on("closed", this.onClose);
+        this.mainWindow.on("unresponsive", function () {
+        });
+        this.mainWindow.webContents.on("crashed", function () {
+        });
     };
     return Application;
 }());
