@@ -45,18 +45,14 @@ export default class ImageProcessor {
       };
     });
 
-    let set;
-
     switch (image.type) {
       case ImageTypes.JPEG:
-        set = ImageProcessor.getSettingsByType(settings, image.type, {
+        imgProcess.jpeg(ImageProcessor.getSettingsByType(settings, image.type, {
           chromaSubsampling: "4:4:4"
-        });
-        imgProcess.jpeg(set);
+        }));
         break;
       case ImageTypes.PNG:
-        set = ImageProcessor.getSettingsByType(settings, image.type);
-        imgProcess.png(set);
+        imgProcess.png(ImageProcessor.getSettingsByType(settings, image.type));
         break;
     }
   }
