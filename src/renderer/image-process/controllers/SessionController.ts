@@ -30,6 +30,7 @@ export default class SessionController {
       SessionController.currentSession.imageGallery.setSuccessful(true);
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);
+      console.warn(err);
     }
 
     SessionController.currentSession.dateFinished = new Date();
