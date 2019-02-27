@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var FileDraggingController_1 = require("./controllers/FileDraggingController");
+var FileDraggingController_1 = require("../core/FileDraggingController");
 var ImageDialogController_1 = require("./controllers/ImageDialogController");
 var SessionController_1 = require("./controllers/SessionController");
 var ImageProcessRendererModule = (function () {
     function ImageProcessRendererModule() {
+        SessionController_1.default.loadConfigFile();
         SessionController_1.default.clearQueue();
         window.addEventListener("DOMContentLoaded", function () {
             var parentFolderSelectBtn = document.querySelector(".image-process__drop-zone");

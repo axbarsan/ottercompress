@@ -71,6 +71,8 @@ export default class ImageProcessor {
         ...selectedSettings[0].settings
       };
 
+      console.log(selectedSettings[0].settings);
+
       return selectedSettings[0].settings;
     }
 

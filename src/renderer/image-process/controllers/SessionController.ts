@@ -1,12 +1,13 @@
 import AppNavigationController from "../../core/AppNavigationController";
 import Image from "../Image";
 import Session from "../Session";
+import ConfigController from "./ConfigController";
 import ImageFilesController from "./ImageFilesController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
 
-  public get session() {
+  public static get session() {
     return SessionController.currentSession;
   }
 
@@ -20,15 +21,15 @@ export default class SessionController {
   }
 
   public static async startQueue(): Promise<void> {
-    const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
+    const { targetPath, parentPath, imageQueue, processSettings } = SessionController.currentSession;
 
-    if (parentPath === null || targetPath === null || imageQueue.isFinished)
+    if (parentPath === null || targetPath === null || imageQueue.isFinished || processSettings === null)
       return;
 
     try {
       await SessionController.currentSession.imageQueue.process(
         targetPath,
-        SessionController.currentSession.processSettings
+        processSettings
       );
       SessionController.currentSession.imageGallery.setSuccessful(true);
     } catch (err) {
@@ -62,5 +63,9 @@ export default class SessionController {
       await AppNavigationController.next();
       SessionController.startQueue();
     }
+  }
+
+  public static loadConfigFile(): void {
+    SessionController.currentSession.processSettings = ConfigController.loadFile().processSettings;
   }
 }

@@ -4,7 +4,10 @@ var ImageDialogController = (function () {
     function ImageDialogController() {
     }
     ImageDialogController.showParentFolderDialog = function (cb) {
+        if (ImageDialogController.isOpen)
+            return;
         var dialog = require("electron").remote.dialog;
+        ImageDialogController.isOpen = true;
         dialog.showOpenDialog({
             title: "Pick a folder with images in it",
             buttonLabel: "Select",
@@ -16,10 +19,14 @@ var ImageDialogController = (function () {
                 ? folderPath[0]
                 : null);
             cb(pathToSend);
+            ImageDialogController.isOpen = false;
         });
     };
     ImageDialogController.showTargetFolderDialog = function (cb) {
+        if (ImageDialogController.isOpen)
+            return;
         var dialog = require("electron").remote.dialog;
+        ImageDialogController.isOpen = true;
         dialog.showOpenDialog({
             title: "Pick a folder where to export the processed files",
             buttonLabel: "Select",
@@ -32,8 +39,10 @@ var ImageDialogController = (function () {
                 ? folderPath[0]
                 : null);
             cb(pathToSend);
+            ImageDialogController.isOpen = false;
         });
     };
+    ImageDialogController.isOpen = false;
     return ImageDialogController;
 }());
 exports.default = ImageDialogController;

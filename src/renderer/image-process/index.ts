@@ -1,9 +1,10 @@
-import FileDraggingController from "./controllers/FileDraggingController";
+import FileDraggingController from "../core/FileDraggingController";
 import ImageDialogController from "./controllers/ImageDialogController";
 import SessionController from "./controllers/SessionController";
 
 export default class ImageProcessRendererModule {
   constructor() {
+    SessionController.loadConfigFile();
     SessionController.clearQueue();
 
     window.addEventListener("DOMContentLoaded", () => {
