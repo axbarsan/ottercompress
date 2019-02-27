@@ -32,9 +32,13 @@ export default class ImageProcessRendererModule {
         });
       }
 
-      const resetBtn: HTMLButtonElement | null = document.querySelector(".image-process__reset");
-      if (resetBtn !== null)
-        resetBtn.addEventListener("click", SessionController.clearQueue);
+      document.addEventListener("click", (e: MouseEvent) => {
+        if (e.target !== null && (e.target as HTMLElement).classList.contains("image-process__reset")) {
+          e.preventDefault();
+          e.stopPropagation();
+          SessionController.clearQueue();
+        }
+      });
     });
   }
 }

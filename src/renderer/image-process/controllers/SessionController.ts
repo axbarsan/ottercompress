@@ -25,7 +25,12 @@ export default class SessionController {
     if (parentPath === null || targetPath === null || imageQueue.isFinished)
       return null;
 
-    await SessionController.currentSession.imageQueue.process(targetPath);
+    try {
+      await SessionController.currentSession.imageQueue.process(targetPath);
+      SessionController.currentSession.imageGallery.setSuccessful(true);
+    } catch (err) {
+      SessionController.currentSession.imageGallery.setSuccessful(false);
+    }
 
     SessionController.currentSession.dateFinished = new Date();
     await AppNavigationController.next();

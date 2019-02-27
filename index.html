@@ -40,14 +40,23 @@
     </div>
     <div class="app__screen">
       <div class="image-process__loading">
-        <div class="image-process__loading__progress">
-          <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
-          <div class="image-process__loading__label">
-            <h1>Done!</h1>
+        <div class="image-process__loading__progress image-process__loading__progress--result">
+          <div class="image-process__loading__progress--result__success">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+            <div class="image-process__loading__label">
+              <h1>Done!</h1>
+            </div>
+            <button class="button button--primary image-process__reset">Optimize more images</button>
           </div>
-          <button class="button button--primary image-process__reset">Optimize more images</button>
+          <div class="image-process__loading__progress--result__fail">
+            <div class="image-process__loading__label">
+              <h1>Oops! Something went wrong :(</h1>
+            </div>
+            <button class="button button--primary image-process__reset">Try again</button>
+          </div>
         </div>
       </div>
     </div>

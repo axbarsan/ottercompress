@@ -207,13 +207,21 @@ h1 {
   align-items: center;
 }
 
-.image-process__loading__progress {
+.image-process__loading__progress:not(.image-process__loading__progress--result), .image-process__loading__progress--result__success, .image-process__loading__progress--result__fail {
   width: 200px;
   height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.image-process__loading__progress--result__success, .image-process__loading__progress--result__fail {
+  display: none;
+}
+
+.image-process__loading__progress--result.success .image-process__loading__progress--result__success, .image-process__loading__progress--result.fail .image-process__loading__progress--result__fail {
+  display: flex;
 }
 
 .image-process__loading__progress img, .image-process__loading__progress svg {
@@ -226,7 +234,7 @@ h1 {
   margin-top: 3rem;
 }
 
-.image-process__loading__label + .button {
+.image-process__loading__label+.button {
   position: absolute;
   bottom: 7vh;
 }

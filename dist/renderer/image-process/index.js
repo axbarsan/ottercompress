@@ -27,9 +27,13 @@ var ImageProcessRendererModule = (function () {
                     ImageDialogController_1.default.showTargetFolderDialog(SessionController_1.default.setTargetFolder);
                 });
             }
-            var resetBtn = document.querySelector(".image-process__reset");
-            if (resetBtn !== null)
-                resetBtn.addEventListener("click", SessionController_1.default.clearQueue);
+            document.addEventListener("click", function (e) {
+                if (e.target !== null && e.target.classList.contains("image-process__reset")) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    SessionController_1.default.clearQueue();
+                }
+            });
         });
     }
     return ImageProcessRendererModule;
