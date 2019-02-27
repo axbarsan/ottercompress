@@ -1,5 +1,7 @@
+import { ImageTypes } from "./controllers/ImageFilesController";
 import Image from "./Image";
 import ImageGallery from "./ImageGallery";
+import { IImageProcessorSettings } from "./ImageProcessor";
 import ImageProcessQueue from "./ImageProcessQueue";
 
 export default class Session {
@@ -11,6 +13,21 @@ export default class Session {
 
   public readonly imageQueue: ImageProcessQueue = new ImageProcessQueue();
   public readonly imageGallery: ImageGallery = new ImageGallery();
+
+  public processSettings: IImageProcessorSettings[] = [
+    {
+      format: ImageTypes.JPEG,
+      settings: {
+        quality: 50
+      }
+    },
+    {
+      format: ImageTypes.PNG,
+      settings: {
+        quality: 50
+      }
+    },
+  ];
 
   public reset(): void {
     this.imageQueue.clear();

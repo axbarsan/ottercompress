@@ -1,5 +1,5 @@
 import Image from "./Image";
-import ImageProcessor from "./ImageProcessor";
+import ImageProcessor, { IImageProcessorSettings } from "./ImageProcessor";
 
 export default class ProcessQueue {
   protected queue: Image[] = [];
@@ -30,11 +30,11 @@ export default class ProcessQueue {
     this._isFinished = false;
   }
 
-  public async process(targetPath: string): Promise<Image[]> {
+  public async process(targetPath: string, settings: IImageProcessorSettings[]): Promise<Image[]> {
     const queueItemsToProcess: Image[] =
       this.queue.filter((image: Image) => !image.isProcessed);
 
-    await Promise.all(queueItemsToProcess.map((image: Image) => ImageProcessor.process(targetPath, image)));
+    await Promise.all(queueItemsToProcess.map((image: Image) => ImageProcessor.process(targetPath, image, settings)));
 
     return queueItemsToProcess;
   }

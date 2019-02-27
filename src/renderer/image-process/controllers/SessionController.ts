@@ -1,7 +1,7 @@
 import AppNavigationController from "../../core/AppNavigationController";
 import Image from "../Image";
 import Session from "../Session";
-import FilesController from "./FilesController";
+import ImageFilesController from "./ImageFilesController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
@@ -11,7 +11,7 @@ export default class SessionController {
   }
 
   public static async addImagesInFolder(path: string): Promise<Image[]> {
-    const images: Image[] = await FilesController.getImagesInFolder(path);
+    const images: Image[] = await ImageFilesController.getImagesInFolder(path);
 
     for (const image of images)
       SessionController.currentSession.add(image);
@@ -26,7 +26,10 @@ export default class SessionController {
       return;
 
     try {
-      await SessionController.currentSession.imageQueue.process(targetPath);
+      await SessionController.currentSession.imageQueue.process(
+        targetPath,
+        SessionController.currentSession.processSettings
+      );
       SessionController.currentSession.imageGallery.setSuccessful(true);
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);

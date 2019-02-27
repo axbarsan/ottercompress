@@ -1,10 +1,19 @@
 import { Stats } from "fs";
 import { ParsedPath } from "path";
+import FilesController from "../../core/FilesController";
 import Image from "../Image";
 
-export default class FilesController {
-  public static readonly allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp"];
+export enum ImageTypes {
+  JPEG = "jpeg",
+  PNG = "png"
+}
 
+export const ImageFormats = {
+  [ImageTypes.JPEG]: [".jpg", ".jpeg"],
+  [ImageTypes.PNG]: [".png"]
+};
+
+export default class ImageFilesController extends FilesController {
   public static async getImagesInFolder(folderPath: string): Promise<Image[]> {
     const remote = require("electron").remote;
     const fs = remote.require("fs").promises;
@@ -17,12 +26,13 @@ export default class FilesController {
       const filePath: string = path.join(folderPath, file);
       const parsedPath: ParsedPath = path.parse(filePath);
 
-      if (FilesController.isExtensionValid(parsedPath.ext)) {
+      if (ImageFilesController.isExtensionValid(parsedPath.ext)) {
         const imageData: Buffer = await fs.readFile(filePath);
         const stats: Stats = await fs.lstat(filePath);
 
         images.push(new Image(
           filePath,
+          ImageFilesController.getImageTypeByExtension(parsedPath.ext),
           parsedPath.name,
           parsedPath.dir,
           parsedPath.ext,
@@ -36,24 +46,22 @@ export default class FilesController {
   }
 
   public static isExtensionValid(extension: string): boolean {
-    return (FilesController.allowedExtensions.indexOf(extension) !== -1);
+    let isValid: boolean = false;
+
+    for (const ext of Object.values(ImageFormats)) {
+      if (ext.indexOf(extension) !== -1)
+        isValid = true;
+    }
+
+    return isValid;
   }
 
-  public static getFileExtension(filePath: string): string {
-    const path = require("electron").remote.require("path");
+  public static getImageTypeByExtension(extension: string): ImageTypes {
+    for (const format of Object.entries(ImageFormats)) {
+      if (format[1].indexOf(extension) !== -1)
+        return format[0] as ImageTypes;
+    }
 
-    return path.parse(filePath).ext;
-  }
-
-  public static getFileName(filePath: string): string {
-    const path = require("electron").remote.require("path");
-
-    return path.parse(filePath).name;
-  }
-
-  public static getFileLocation(filePath: string): string {
-    const path = require("electron").remote.require("path");
-
-    return path.parse(filePath).dir;
+    return ImageTypes.JPEG;
   }
 }
