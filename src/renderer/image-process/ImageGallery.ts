@@ -64,6 +64,7 @@ export default class ImagePicker {
     }
 
     this.resultElement.classList.remove("success", "fail");
+    this.updateCounter(0);
   }
 
   public addImage(image: Image): void {

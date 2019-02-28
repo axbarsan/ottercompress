@@ -33,14 +33,14 @@ class AppNavigationController {
         if (elemIndex === index) {
           this.setTransitionDelay(elem, this.animationDuration);
           elem.classList.add(this.activeClass);
-
-          setTimeout(() => {
-            resolve();
-          }, this.animationDuration);
         } else {
           this.setTransitionDelay(elem, 0);
           elem.classList.remove(this.activeClass);
         }
+
+        setTimeout(() => {
+          resolve();
+        }, this.animationDuration * 2);
       });
     });
   }

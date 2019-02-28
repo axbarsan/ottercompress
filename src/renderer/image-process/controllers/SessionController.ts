@@ -107,7 +107,7 @@ export default class SessionController {
   }
 
   public static showTargetPathDialog(): void {
-    const defaultPath: string | null = SessionController.currentSession.defaultParentPath;
+    const defaultPath: string | null = SessionController.currentSession.defaultTargetPath;
 
     DialogController.showOpenDialogWithSettings({
       title: "Pick a folder where to export the processed files",

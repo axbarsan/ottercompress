@@ -60,7 +60,7 @@ export default class ConfigController {
     const fs = remote.require("fs").promises;
 
     try {
-      const configAsData: Buffer = Buffer.from(JSON.stringify(ConfigController.config, null, 4));
+      const configAsData: Buffer = Buffer.from(JSON.stringify(ConfigController.config, null, 2));
       await fs.writeFile(ConfigController.location, configAsData);
     } catch (err) {
       // Error writing the file
