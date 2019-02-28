@@ -10,6 +10,9 @@ export default class Session {
   public parentPath: string | null = null;
   public targetPath: string | null = null;
 
+  public defaultParentPath: string | null = null;
+  public defaultTargetPath: string | null = null;
+
   public readonly imageQueue: ImageProcessQueue = new ImageProcessQueue();
   public readonly imageGallery: ImageGallery = new ImageGallery();
 

@@ -1,5 +1,4 @@
 import FileDraggingController from "../core/FileDraggingController";
-import ImageDialogController from "./controllers/ImageDialogController";
 import SessionController from "./controllers/SessionController";
 
 export default class ImageProcessRendererModule {
@@ -11,9 +10,7 @@ export default class ImageProcessRendererModule {
       const parentFolderSelectBtn: HTMLDivElement | null = document.querySelector(".image-process__drop-zone");
 
       if (parentFolderSelectBtn !== null) {
-        parentFolderSelectBtn.addEventListener("click", () => {
-          ImageDialogController.showParentFolderDialog(SessionController.setParentFolder);
-        });
+        parentFolderSelectBtn.addEventListener("click", SessionController.showParentPathDialog);
 
         const parentFolderDragging: FileDraggingController = new FileDraggingController({
           element: parentFolderSelectBtn,
@@ -28,9 +25,7 @@ export default class ImageProcessRendererModule {
       const targetFolderSelectBtn: HTMLButtonElement | null =
         document.querySelector(".image-process__select--target button");
       if (targetFolderSelectBtn !== null) {
-        targetFolderSelectBtn.addEventListener("click", () => {
-          ImageDialogController.showTargetFolderDialog(SessionController.setTargetFolder);
-        });
+        targetFolderSelectBtn.addEventListener("click", SessionController.showTargetPathDialog);
       }
 
       document.addEventListener("click", (e: MouseEvent) => {
