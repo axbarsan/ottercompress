@@ -1,10 +1,11 @@
 type DialogCallback = (path: string | null) => void;
+type MessageBoxCallback = () => void;
 
 export default class ImageDialogController {
   protected static isOpen: boolean = false;
 
   public static showParentFolderDialog(cb: DialogCallback): void {
-    ImageDialogController.openDialogWithSettings({
+    ImageDialogController.showOpenDialogWithSettings({
       title: "Pick a folder with images in it",
       buttonLabel: "Select",
       properties: [
@@ -14,7 +15,7 @@ export default class ImageDialogController {
   }
 
   public static showTargetFolderDialog(cb: DialogCallback): void {
-    ImageDialogController.openDialogWithSettings({
+    ImageDialogController.showOpenDialogWithSettings({
       title: "Pick a folder where to export the processed files",
       buttonLabel: "Select",
       properties: [
@@ -24,7 +25,15 @@ export default class ImageDialogController {
     }, cb);
   }
 
-  protected static openDialogWithSettings(settings: Electron.OpenDialogOptions, cb: DialogCallback): void {
+  public static showWarning(message: string, cb?: MessageBoxCallback): void {
+    ImageDialogController.showMessageBoxWithSettings({
+      type: "warning",
+      message: "This is embarrassing...",
+      detail: message
+    }, cb);
+  }
+
+  protected static showOpenDialogWithSettings(settings: Electron.OpenDialogOptions, cb: DialogCallback): void {
     if (ImageDialogController.isOpen)
       return;
 
@@ -39,6 +48,22 @@ export default class ImageDialogController {
           : null);
 
       cb(pathToSend);
+      ImageDialogController.isOpen = false;
+    });
+  }
+
+  protected static showMessageBoxWithSettings(settings: Electron.MessageBoxOptions, cb?: MessageBoxCallback): void {
+    if (ImageDialogController.isOpen)
+      return;
+
+    const { dialog, getCurrentWindow } = require("electron").remote;
+
+    ImageDialogController.isOpen = true;
+
+    dialog.showMessageBox(getCurrentWindow(), settings, (): void => {
+      if (cb !== undefined)
+        cb();
+
       ImageDialogController.isOpen = false;
     });
   }

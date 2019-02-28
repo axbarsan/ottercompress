@@ -31,15 +31,15 @@ class AppNavigationController {
 
       this.elements.forEach((elem: HTMLElement, elemIndex: number): void => {
         if (elemIndex === index) {
-          elem.classList.add(this.activeClass);
           this.setTransitionDelay(elem, this.animationDuration);
+          elem.classList.add(this.activeClass);
 
           setTimeout(() => {
             resolve();
           }, this.animationDuration);
         } else {
-          elem.classList.remove(this.activeClass);
           this.setTransitionDelay(elem, 0);
+          elem.classList.remove(this.activeClass);
         }
       });
     });

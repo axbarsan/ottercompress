@@ -9,9 +9,9 @@ export interface IConfigStructure {
 }
 
 export default class ConfigController {
-  public static readonly location: string = path.resolve(__dirname, "../", "config", "config.json");
+  protected static readonly location: string = path.resolve(__dirname, "../", "config", "config.json");
 
-  protected static defaultConfig: IConfigStructure = {
+  protected static readonly defaultConfig: IConfigStructure = {
     parentPath: null,
     targetPath: null,
     processSettings: [
@@ -31,8 +31,11 @@ export default class ConfigController {
   };
   protected static config: IConfigStructure = ConfigController.defaultConfig;
 
-  public static set configOptions(config: IConfigStructure) {
-    ConfigController.config = config;
+  public static addConfigOptions(options: Partial<IConfigStructure>): void {
+    ConfigController.config = {
+      ...ConfigController.config,
+      ...options
+    };
   }
 
   public static loadFile(): IConfigStructure {

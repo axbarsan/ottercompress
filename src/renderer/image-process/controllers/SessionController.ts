@@ -3,6 +3,7 @@ import Image from "../Image";
 import Session from "../Session";
 import ConfigController from "./ConfigController";
 import ImageFilesController from "./ImageFilesController";
+import ImageDialogController from "./ImageDialogController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
@@ -13,6 +14,9 @@ export default class SessionController {
 
   public static async addImagesInFolder(path: string): Promise<Image[]> {
     const images: Image[] = await ImageFilesController.getImagesInFolder(path);
+
+    if (images.length === 0)
+      throw new Error("I could not find any images with the right format in the folder you provided :(");
 
     for (const image of images)
       SessionController.currentSession.add(image);
@@ -51,8 +55,14 @@ export default class SessionController {
 
     if (folderPath !== null) {
       await AppNavigationController.next();
-      await SessionController.addImagesInFolder(folderPath);
-      SessionController.currentSession.imageGallery.setTargetBrowserVisibleState(true);
+      try {
+        await SessionController.addImagesInFolder(folderPath);
+        SessionController.currentSession.imageGallery.setTargetBrowserVisibleState(true);
+      } catch (err) {
+        ImageDialogController.showWarning(err.message, async () => {
+          await AppNavigationController.prev();
+        });
+      }
     }
   }
 
