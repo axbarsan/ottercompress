@@ -13,10 +13,6 @@ export interface IImageProcessorSettings {
 }
 
 export default class ImageProcessor {
-  protected static commonSettings: IImageFormatSettings = {
-    progressive: true
-  };
-
   public static async process(targetPath: string, image: Image, settings: IImageProcessorSettings[]): Promise<Image> {
     if (image.isProcessed)
       return image;
@@ -38,18 +34,9 @@ export default class ImageProcessor {
   }
 
   public static addProcessSettings(image: Image, settings: IImageProcessorSettings[], imgProcess: any): void {
-    settings.map((options: IImageProcessorSettings): void => {
-      options.settings = {
-        ...ImageProcessor.commonSettings,
-        ...options.settings
-      };
-    });
-
     switch (image.type) {
       case ImageTypes.JPEG:
-        imgProcess.jpeg(ImageProcessor.getSettingsByType(settings, image.type, {
-          chromaSubsampling: "4:4:4"
-        }));
+        imgProcess.jpeg(ImageProcessor.getSettingsByType(settings, image.type));
         break;
       case ImageTypes.PNG:
         imgProcess.png(ImageProcessor.getSettingsByType(settings, image.type));
@@ -67,7 +54,6 @@ export default class ImageProcessor {
     if (selectedSettings.length > 0) {
       selectedSettings[0].settings = {
         ...additionalOptions,
-        ...ImageProcessor.commonSettings,
         ...selectedSettings[0].settings
       };
 
@@ -76,6 +62,6 @@ export default class ImageProcessor {
       return selectedSettings[0].settings;
     }
 
-    return ImageProcessor.commonSettings;
+    return {};
   }
 }

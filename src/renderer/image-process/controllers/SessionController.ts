@@ -1,9 +1,9 @@
 import AppNavigationController from "../../core/AppNavigationController";
 import Image from "../Image";
 import Session from "../Session";
-import ConfigController from "./ConfigController";
-import ImageFilesController from "./ImageFilesController";
+import ConfigController, { IConfigStructure } from "./ConfigController";
 import ImageDialogController from "./ImageDialogController";
+import ImageFilesController from "./ImageFilesController";
 
 export default class SessionController {
   protected static currentSession: Session = new Session();
@@ -24,7 +24,7 @@ export default class SessionController {
     return images;
   }
 
-  public static async startQueue(): Promise<void> {
+  public static async handleQueue(): Promise<void> {
     const { targetPath, parentPath, imageQueue, processSettings } = SessionController.currentSession;
 
     if (parentPath === null || targetPath === null || imageQueue.isFinished || processSettings === null)
@@ -36,6 +36,18 @@ export default class SessionController {
         processSettings
       );
       SessionController.currentSession.imageGallery.setSuccessful(true);
+
+      ImageDialogController.defaultParentPath = parentPath;
+      ImageDialogController.defaultTargetPath = targetPath;
+
+      ConfigController.addConfigOptions({
+        targetPath,
+        parentPath,
+        processSettings
+      });
+
+      ConfigController.saveFile();
+
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);
       console.warn(err);
@@ -71,11 +83,14 @@ export default class SessionController {
 
     if (folderPath !== null) {
       await AppNavigationController.next();
-      SessionController.startQueue();
+      SessionController.handleQueue();
     }
   }
 
-  public static loadConfigFile(): void {
-    SessionController.currentSession.processSettings = ConfigController.loadFile().processSettings;
+  public static loadConfig(): void {
+    const config: IConfigStructure = ConfigController.loadFile();
+    SessionController.currentSession.processSettings = config.processSettings;
+    ImageDialogController.defaultParentPath = config.parentPath;
+    ImageDialogController.defaultTargetPath = config.targetPath;
   }
 }

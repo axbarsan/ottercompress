@@ -18,12 +18,15 @@ export default class ConfigController {
       {
         format: ImageTypes.JPEG,
         settings: {
+          progressive: true,
+          chromaSubsampling: "4:4:4",
           quality: 80
         }
       },
       {
         format: ImageTypes.PNG,
         settings: {
+          progressive: true,
           quality: 80
         }
       }
@@ -57,7 +60,7 @@ export default class ConfigController {
     const fs = remote.require("fs").promises;
 
     try {
-      const configAsData: Buffer = Buffer.from(JSON.stringify(ConfigController.config));
+      const configAsData: Buffer = Buffer.from(JSON.stringify(ConfigController.config, null, 4));
       await fs.writeFile(ConfigController.location, configAsData);
     } catch (err) {
       // Error writing the file

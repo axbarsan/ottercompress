@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from "electron";
+import { app, BrowserWindow, Menu, screen } from "electron";
 import * as path from "path";
 import * as process from "process";
 
@@ -6,8 +6,12 @@ export default class Application {
   protected mainWindow: BrowserWindow | null = null;
 
   constructor() {
-    process.on("uncaughtException", () => {
+    process.on("uncaughtException", (): void => {
       // App crashed
+    });
+
+    app.setAboutPanelOptions({
+      copyright: "Copyright (C) 2019 axbarsan. All rights reserved."
     });
 
     app.on("window-all-closed", this.onWindowAllClosed.bind(this));
@@ -15,24 +19,27 @@ export default class Application {
     app.on("activate", this.onReady.bind(this));
   }
 
-  private onWindowAllClosed() {
+  protected onWindowAllClosed(): void {
     if (process.platform !== "darwin") {
       app.quit();
     }
   }
 
-  private onClose() {
+  protected onClose(): void {
     this.mainWindow = null;
   }
 
-  private onReady() {
+  protected onReady(): void {
+    if (this.mainWindow !== null)
+      return;
+
     this.mainWindow = new BrowserWindow({
       height: 500,
       width: 400,
       show: false,
       resizable: false,
       fullscreenable: false,
-      title: "Ottercompress",
+      title: app.getName(),
       titleBarStyle: "hidden",
       maximizable: false,
       backgroundColor: "#6d3580",
@@ -64,5 +71,57 @@ export default class Application {
     this.mainWindow.webContents.on("crashed", (): void => {
       // App crashed
     });
+
+    this.createMenu();
+  }
+
+  protected createMenu(): void {
+    const template: Electron.MenuItemConstructorOptions[] = [
+      {
+        role: "window",
+        submenu: [
+          { role: "minimize" },
+          { role: "close" }
+        ]
+      },
+      {
+        role: "help",
+        submenu: [
+          {
+            label: "View repository",
+            click() { require("electron").shell.openExternal("https://github.com/axbarsan"); }
+          }
+        ]
+      }
+    ];
+
+    if (process.platform === "darwin") {
+      template.unshift({
+        label: app.getName(),
+        submenu: [
+          { role: "about" },
+          { type: "separator" },
+          { role: "services" },
+          { type: "separator" },
+          { role: "hide" },
+          { role: "hideothers" },
+          { role: "unhide" },
+          { type: "separator" },
+          { role: "quit" }
+        ]
+      });
+
+      // Window menu
+      template[1].submenu = [
+        { role: "close" },
+        { role: "minimize" },
+        { role: "zoom" },
+        { type: "separator" },
+        { role: "front" }
+      ];
+    }
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
   }
 }

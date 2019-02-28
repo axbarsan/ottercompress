@@ -4,7 +4,7 @@ import SessionController from "./controllers/SessionController";
 
 export default class ImageProcessRendererModule {
   constructor() {
-    SessionController.loadConfigFile();
+    SessionController.loadConfig();
     SessionController.clearQueue();
 
     window.addEventListener("DOMContentLoaded", () => {

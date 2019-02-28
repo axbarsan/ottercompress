@@ -1,7 +1,8 @@
 {
   "name": "ottercompress",
+  "productName": "ottercompress",
   "version": "1.0.0",
-  "description": "Just an otter compressing some photos",
+  "description": "Just an otter compressing some images",
   "scripts": {
     "prestart": "tsc",
     "start": "electron --inspect=9229 ./dist/main.js"
