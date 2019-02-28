@@ -73,6 +73,8 @@ export default class Application {
     });
 
     this.createMenu();
+
+    this.mainWindow.webContents.openDevTools();
   }
 
   protected createMenu(): void {

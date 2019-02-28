@@ -1,8 +1,8 @@
 import AppNavigationController from "../../core/AppNavigationController";
+import DialogController from "../../core/DialogController";
 import Image from "../Image";
 import Session from "../Session";
 import ConfigController, { IConfigStructure } from "./ConfigController";
-import DialogController from "../../core/DialogController";
 import ImageFilesController from "./ImageFilesController";
 
 export default class SessionController {

@@ -2,15 +2,21 @@
   "name": "ottercompress",
   "productName": "ottercompress",
   "version": "1.0.0",
+  "author": "axbarsan",
+  "copyright": "(C) 2019 axbarsan. All rights reserver.",
+  "main": "dist/main.js",
   "description": "Just an otter compressing some images",
   "scripts": {
     "prestart": "tsc",
-    "start": "electron --inspect=9229 ./dist/main.js"
+    "start": "electron --inspect=9229 ./dist/main.js",
+    "package-mac": "tsc && electron-packager . --overwrite --asar.unpack=**/node_modules/sharp/**/* --platform=darwin --arch=x64 --prune --out=build --darwinDarkModeSupport=true",
+    "package-win": "tsc && electron-packager . --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune --out=build --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ottercompress\""
   },
-  "author": "axbarsan",
   "devDependencies": {
+    "asar": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^4.0.6",
+    "electron-packager": "^13.1.0",
     "electron-rebuild": "^1.8.4",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"

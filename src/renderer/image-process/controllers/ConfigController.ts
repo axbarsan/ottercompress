@@ -9,7 +9,7 @@ export interface IConfigStructure {
 }
 
 export default class ConfigController {
-  protected static readonly location: string = path.resolve(__dirname, "../", "config", "config.json");
+  protected static readonly location: string = path.resolve(__dirname, "../../../", "config", "config.json");
 
   protected static readonly defaultConfig: IConfigStructure = {
     parentPath: null,
@@ -48,6 +48,7 @@ export default class ConfigController {
     try {
       const configContents: Buffer = fs.readFileSync(ConfigController.location);
       ConfigController.config = JSON.parse(configContents.toString()) as IConfigStructure;
+      console.log(ConfigController.config);
     } catch (err) {
       ConfigController.config = ConfigController.defaultConfig;
     }
