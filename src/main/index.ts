@@ -12,7 +12,7 @@ export default class Application {
     Application.browserWindow = browserWindow;
 
     Application.app.setAboutPanelOptions({
-      copyright: "Copyright (C) 2019 axbarsan. All rights reserved."
+      copyright: "MIT (C) 2019 axbarsan. All rights reserved."
     });
 
     Application.app.on("ready", Application.onReady);

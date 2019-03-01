@@ -2,7 +2,12 @@
   "name": "ottercompress",
   "version": "1.0.0",
   "author": "axbarsan",
-  "copyright": "(C) 2019 axbarsan. All rights reserver.",
+  "license": "MIT",
+  "copyright": "MIT (C) 2019 axbarsan. All rights reserved.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axbarsan/ottercompress.git"
+  },
   "main": "dist/main.js",
   "description": "Just an otter compressing some images",
   "scripts": {
@@ -41,8 +46,7 @@
     },
     "win": {
       "target": [
-        "zip",
-        "dir"
+        "zip"
       ]
     }
   }
