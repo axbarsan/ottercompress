@@ -28,7 +28,7 @@ export default class Application {
     });
   }
 
-  protected static onClose(event: Electron.Event): void {
+  protected static onClose(): void {
     Application.mainWindow = null;
   }
 

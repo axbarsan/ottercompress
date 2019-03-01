@@ -36,15 +36,6 @@ export default class SessionController {
         processSettings
       );
       SessionController.currentSession.imageGallery.setSuccessful(true);
-
-      ConfigController.addConfigOptions({
-        targetPath,
-        parentPath,
-        processSettings
-      });
-
-      ConfigController.save();
-
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);
       console.warn(err);
@@ -61,9 +52,12 @@ export default class SessionController {
 
   public static setParentFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.parentPath = folderPath;
-    SessionController.currentSession.defaultParentPath = folderPath;
 
     if (folderPath !== null) {
+      SessionController.currentSession.defaultParentPath = folderPath;
+      ConfigController.persist({
+        parentPath: folderPath
+      });
       await AppNavigationController.next();
       try {
         await SessionController.addImagesInFolder(folderPath);
@@ -78,9 +72,12 @@ export default class SessionController {
 
   public static setTargetFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.targetPath = folderPath;
-    SessionController.currentSession.defaultTargetPath = folderPath;
 
     if (folderPath !== null) {
+      SessionController.currentSession.defaultTargetPath = folderPath;
+      ConfigController.persist({
+        targetPath: folderPath
+      });
       await AppNavigationController.next();
       SessionController.handleQueue();
     }

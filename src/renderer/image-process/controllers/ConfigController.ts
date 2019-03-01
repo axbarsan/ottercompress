@@ -34,7 +34,7 @@ export default class ConfigController {
   };
   protected static config: IConfigStructure = ConfigController.defaultConfig;
 
-  public static addConfigOptions(options: Partial<IConfigStructure>): void {
+  protected static addConfigOptions(options: Partial<IConfigStructure>): void {
     ConfigController.config = {
       ...ConfigController.config,
       ...options
@@ -54,7 +54,12 @@ export default class ConfigController {
     return ConfigController.config;
   }
 
-  public static save(): void {
+  protected static save(): void {
     localStorage.setItem(ConfigController.configKey, JSON.stringify(ConfigController.config));
+  }
+
+  public static persist(options: Partial<IConfigStructure>): void {
+    ConfigController.addConfigOptions(options);
+    ConfigController.save();
   }
 }
