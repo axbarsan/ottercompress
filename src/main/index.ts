@@ -11,9 +11,11 @@ export default class Application {
     Application.app = app;
     Application.browserWindow = browserWindow;
 
-    Application.app.setAboutPanelOptions({
-      copyright: "Made by axbarsan."
-    });
+    if (process.platform === "darwin") {
+      Application.app.setAboutPanelOptions({
+        copyright: "Made by axbarsan."
+      });
+    }
 
     Application.app.on("ready", Application.onReady);
     Application.app.on("window-all-closed", (): void => {
