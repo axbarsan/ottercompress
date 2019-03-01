@@ -1,27 +1,50 @@
 {
   "name": "ottercompress",
-  "productName": "ottercompress",
   "version": "1.0.0",
   "author": "axbarsan",
   "copyright": "(C) 2019 axbarsan. All rights reserver.",
   "main": "dist/main.js",
   "description": "Just an otter compressing some images",
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "prestart": "tsc",
     "start": "electron --inspect=9229 ./dist/main.js",
-    "package-mac": "tsc && electron-packager . --overwrite --asar.unpack=**/node_modules/sharp/**/* --platform=darwin --arch=x64 --prune --out=build --darwinDarkModeSupport=true",
-    "package-win": "tsc && electron-packager . --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune --out=build --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ottercompress\""
+    "pack": "build --dir",
+    "dist": "build"
   },
   "devDependencies": {
-    "asar": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^4.0.6",
-    "electron-packager": "^13.1.0",
-    "electron-rebuild": "^1.8.4",
+    "electron-builder": "^20.38.5",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },
   "dependencies": {
+    "asar": "^1.0.0",
     "sharp": "^0.21.3"
+  },
+  "build": {
+    "directories": {
+      "output": "./build"
+    },
+    "productName": "ottercompress",
+    "appId": "com.electron.ottercompress",
+    "files": [
+      "**/*"
+    ],
+    "mac": {
+      "artifactName": "${productName}-${version}-osx.${ext}",
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "zip",
+        "dir"
+      ]
+    }
   }
 }

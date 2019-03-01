@@ -6,10 +6,6 @@ export default class Application {
   protected mainWindow: BrowserWindow | null = null;
 
   constructor() {
-    process.on("uncaughtException", (): void => {
-      // App crashed
-    });
-
     app.setAboutPanelOptions({
       copyright: "Copyright (C) 2019 axbarsan. All rights reserved."
     });
@@ -64,17 +60,13 @@ export default class Application {
 
     this.mainWindow.on("closed", this.onClose);
 
-    this.mainWindow.on("unresponsive", (): void => {
-      // App is unresponsive
-    });
-
-    this.mainWindow.webContents.on("crashed", (): void => {
-      // App crashed
-    });
-
     this.createMenu();
-
     this.mainWindow.webContents.openDevTools();
+    this.mainWindow.webContents.executeJavaScript(`
+      let path = require('path');
+      module.paths.push(path.resolve(__dirname, '..', 'app.asar.unpacked', 'node_modules'));
+      path = undefined;
+    `);
   }
 
   protected createMenu(): void {
