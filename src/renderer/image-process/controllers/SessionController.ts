@@ -43,7 +43,7 @@ export default class SessionController {
         processSettings
       });
 
-      ConfigController.saveFile();
+      ConfigController.save();
 
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);
@@ -51,7 +51,7 @@ export default class SessionController {
     }
 
     SessionController.currentSession.dateFinished = new Date();
-    await AppNavigationController.next();
+    AppNavigationController.next();
   }
 
   public static clearQueue(): void {
@@ -87,7 +87,7 @@ export default class SessionController {
   }
 
   public static loadConfig(): void {
-    const config: IConfigStructure = ConfigController.loadFile();
+    const config: IConfigStructure = ConfigController.load();
     SessionController.currentSession.processSettings = config.processSettings;
     SessionController.currentSession.defaultParentPath = config.parentPath;
     SessionController.currentSession.defaultTargetPath = config.targetPath;

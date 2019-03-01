@@ -40,7 +40,7 @@ class AppNavigationController {
 
         setTimeout(() => {
           resolve();
-        }, this.animationDuration * 2);
+        }, this.animationDuration * 2.2);
       });
     });
   }

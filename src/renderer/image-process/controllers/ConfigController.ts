@@ -9,7 +9,7 @@ export interface IConfigStructure {
 }
 
 export default class ConfigController {
-  protected static readonly location: string = path.resolve(__dirname, "../../../", "config", "config.json");
+  protected static readonly configKey: string = "config";
 
   protected static readonly defaultConfig: IConfigStructure = {
     parentPath: null,
@@ -41,30 +41,20 @@ export default class ConfigController {
     };
   }
 
-  public static loadFile(): IConfigStructure {
-    const remote = require("electron").remote;
-    const fs = remote.require("fs");
+  public static load(): IConfigStructure {
+    const configContents: string | null = localStorage.getItem(ConfigController.configKey);
 
-    try {
-      const configContents: Buffer = fs.readFileSync(ConfigController.location);
-      ConfigController.config = JSON.parse(configContents.toString()) as IConfigStructure;
-      console.log(ConfigController.config);
-    } catch (err) {
+    if (configContents !== null)
+      ConfigController.config = JSON.parse(configContents) as IConfigStructure;
+    else
       ConfigController.config = ConfigController.defaultConfig;
-    }
+
+    console.log(ConfigController.config);
 
     return ConfigController.config;
   }
 
-  public static async saveFile(): Promise<void> {
-    const remote = require("electron").remote;
-    const fs = remote.require("fs").promises;
-
-    try {
-      const configAsData: Buffer = Buffer.from(JSON.stringify(ConfigController.config, null, 2));
-      await fs.writeFile(ConfigController.location, configAsData);
-    } catch (err) {
-      // Error writing the file
-    }
+  public static save(): void {
+    localStorage.setItem(ConfigController.configKey, JSON.stringify(ConfigController.config));
   }
 }

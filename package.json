@@ -9,8 +9,7 @@
     "postinstall": "electron-builder install-app-deps",
     "prestart": "tsc",
     "start": "electron --inspect=9229 ./dist/main.js",
-    "pack": "build --dir",
-    "dist": "build"
+    "dist": "tsc && build"
   },
   "devDependencies": {
     "devtron": "^1.4.0",
@@ -33,10 +32,10 @@
       "**/*"
     ],
     "mac": {
+      "darkModeSupport": true,
       "artifactName": "${productName}-${version}-osx.${ext}",
       "category": "public.app-category.productivity",
       "target": [
-        "dmg",
         "zip"
       ]
     },

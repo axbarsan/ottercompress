@@ -1,3 +1,4 @@
+import { app, BrowserWindow } from "electron";
 import Application from "./main/";
 
-export const application: Application = new Application();
+Application.bootstrap(app, BrowserWindow);

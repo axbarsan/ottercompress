@@ -1,41 +1,43 @@
-import { app, BrowserWindow, Menu, screen } from "electron";
+import { BrowserWindow, Menu, screen } from "electron";
 import * as path from "path";
 import * as process from "process";
 
 export default class Application {
-  protected mainWindow: BrowserWindow | null = null;
+  protected static mainWindow: BrowserWindow | null = null;
+  protected static app: Electron.App;
+  protected static browserWindow: typeof BrowserWindow;
 
-  constructor() {
-    app.setAboutPanelOptions({
+  public static bootstrap(app: Electron.App, browserWindow: typeof BrowserWindow): void {
+    Application.app = app;
+    Application.browserWindow = browserWindow;
+
+    Application.app.setAboutPanelOptions({
       copyright: "Copyright (C) 2019 axbarsan. All rights reserved."
     });
 
-    app.on("window-all-closed", this.onWindowAllClosed.bind(this));
-    app.on("ready", this.onReady.bind(this));
-    app.on("activate", this.onReady.bind(this));
+    Application.app.on("ready", Application.onReady);
+    Application.app.on("window-all-closed", (): void => {
+      if (process.platform !== "darwin")
+        Application.app.quit();
+    });
+    Application.app.on("activate", () => {
+      if (Application.mainWindow === null)
+        Application.onReady();
+    });
   }
 
-  protected onWindowAllClosed(): void {
-    if (process.platform !== "darwin") {
-      app.quit();
-    }
+  protected static onClose(event: Electron.Event): void {
+    Application.mainWindow = null;
   }
 
-  protected onClose(): void {
-    this.mainWindow = null;
-  }
-
-  protected onReady(): void {
-    if (this.mainWindow !== null)
-      return;
-
-    this.mainWindow = new BrowserWindow({
+  protected static onReady(): void {
+    Application.mainWindow = new Application.browserWindow({
       height: 500,
       width: 400,
       show: false,
       resizable: false,
       fullscreenable: false,
-      title: app.getName(),
+      title: Application.app.getName(),
       titleBarStyle: "hidden",
       maximizable: false,
       backgroundColor: "#6d3580",
@@ -44,32 +46,27 @@ export default class Application {
       }
     });
 
-    this.mainWindow
+    Application.mainWindow
       .loadURL("file://" + path.join(__dirname, "../../index.html"));
 
-    this.mainWindow.once("ready-to-show", () => {
-      if (this.mainWindow !== null) {
+    Application.mainWindow.once("ready-to-show", () => {
+      if (Application.mainWindow !== null) {
         const { x, y } = screen.getCursorScreenPoint();
         const currentDisplay = screen.getDisplayNearestPoint({ x, y });
 
-        this.mainWindow.setPosition(currentDisplay.workArea.x, currentDisplay.workArea.y);
-        this.mainWindow.center();
-        this.mainWindow.show();
+        Application.mainWindow.setPosition(currentDisplay.workArea.x, currentDisplay.workArea.y);
+        Application.mainWindow.center();
+        Application.mainWindow.show();
       }
     });
 
-    this.mainWindow.on("closed", this.onClose);
+    Application.mainWindow.on("closed", Application.onClose);
 
-    this.createMenu();
-    this.mainWindow.webContents.openDevTools();
-    this.mainWindow.webContents.executeJavaScript(`
-      let path = require('path');
-      module.paths.push(path.resolve(__dirname, '..', 'app.asar.unpacked', 'node_modules'));
-      path = undefined;
-    `);
+    Application.createMenu();
+    // Application.mainWindow.webContents.openDevTools();
   }
 
-  protected createMenu(): void {
+  protected static createMenu(): void {
     const template: Electron.MenuItemConstructorOptions[] = [
       {
         role: "window",
@@ -91,7 +88,7 @@ export default class Application {
 
     if (process.platform === "darwin") {
       template.unshift({
-        label: app.getName(),
+        label: Application.app.getName(),
         submenu: [
           { role: "about" },
           { type: "separator" },
