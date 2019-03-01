@@ -2,8 +2,7 @@
   "name": "ottercompress",
   "version": "1.0.0",
   "author": "axbarsan",
-  "license": "MIT",
-  "copyright": "MIT (C) 2019 axbarsan. All rights reserved.",
+  "license": "APACHE",
   "repository": {
     "type": "git",
     "url": "https://github.com/axbarsan/ottercompress.git"
