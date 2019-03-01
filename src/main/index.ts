@@ -47,7 +47,7 @@ export default class Application {
     });
 
     Application.mainWindow
-      .loadURL("file://" + path.join(__dirname, "../../index.html"));
+      .loadURL("file://" + path.join(__dirname, "../static/index.html"));
 
     Application.mainWindow.once("ready-to-show", () => {
       if (Application.mainWindow !== null) {

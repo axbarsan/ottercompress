@@ -7,12 +7,12 @@
     "type": "git",
     "url": "https://github.com/axbarsan/ottercompress.git"
   },
-  "main": "dist/main.js",
+  "main": "app/main.js",
   "description": "Just an otter compressing some images",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "prestart": "tsc",
-    "start": "electron --inspect=9229 ./dist/main.js",
+    "start": "electron --inspect=9229 ./app/main.js",
     "dist": "tsc && build"
   },
   "devDependencies": {
@@ -27,13 +27,16 @@
     "sharp": "^0.21.3"
   },
   "build": {
+    "asar": false,
     "directories": {
-      "output": "./build"
+      "output": "./dist"
     },
     "productName": "ottercompress",
     "appId": "com.electron.ottercompress",
     "files": [
-      "**/*"
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json"
     ],
     "mac": {
       "darkModeSupport": true,

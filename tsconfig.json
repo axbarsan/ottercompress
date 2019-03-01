@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "dist",
+    "outDir": "app",
     "rootDir": "src",
     "baseUrl": ".",
     "lib": [
@@ -20,7 +20,7 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
-    "build"
+    "app",
+    "dist"
   ]
 }
