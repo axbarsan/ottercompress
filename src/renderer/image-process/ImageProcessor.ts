@@ -1,5 +1,6 @@
 import { ImageTypes } from "./controllers/ImageFilesController";
 import Image from "./Image";
+import ImageResolution from "./ImageResolution";
 
 export interface IImageFormatSettings {
   progressive?: boolean;
@@ -13,7 +14,9 @@ export interface IImageProcessorSettings {
 }
 
 export default class ImageProcessor {
-  public static async process(targetPath: string, image: Image, settings: IImageProcessorSettings[]): Promise<Image> {
+  public static async process(
+    targetPath: string, image: Image, resizeResolution: ImageResolution, settings: IImageProcessorSettings[]
+  ): Promise<Image> {
     if (image.isProcessed)
       return image;
 
@@ -26,6 +29,9 @@ export default class ImageProcessor {
 
     const sharpImage = await sharp(image.data);
     ImageProcessor.addProcessSettings(image, settings, sharpImage);
+    ImageProcessor.setResizeResolution(resizeResolution, sharpImage);
+
+    console.log(resizeResolution);
 
     await sharpImage.toFile(targetFilePath);
     image.isProcessed = true;
@@ -42,6 +48,18 @@ export default class ImageProcessor {
         imgProcess.png(ImageProcessor.getSettingsByType(settings, image.type));
         break;
     }
+  }
+
+  public static setResizeResolution(resolution: ImageResolution, imgProcess: any): void {
+    const { width, height } = resolution;
+
+    if (width === null && height === null)
+      return;
+
+    imgProcess.resize(width, height, {
+      fit: "inside",
+      withoutEnlargement: true
+    });
   }
 
   public static getSettingsByType(

@@ -38,9 +38,7 @@ class AppNavigationController {
           elem.classList.remove(this.activeClass);
         }
 
-        setTimeout(() => {
-          resolve();
-        }, this.animationDuration * 2.2);
+        setTimeout(resolve, this.animationDuration * 2.2);
       });
     });
   }

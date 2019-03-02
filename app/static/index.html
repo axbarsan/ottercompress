@@ -5,13 +5,46 @@
   <meta charset="UTF-8">
   <title>Ottercompress</title>
   <link rel="stylesheet" href="./style.css">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'; img-src 'self' data:">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-inline'; script-src 'self' 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'; img-src 'self' data:">
 </head>
 
 <body style="opacity: 0;">
   <div class="app__header"></div>
   <div class="app__wrapper">
     <div class="app__screen">
+      <div class="image-process__settings">
+        <div class="image-process__settings__toggle">
+          <img src="./images/settings.svg" alt="Settings">
+          <span>Settings</span>
+        </div>
+        <div class="image-process__settings__options">
+          <div class="image-process__settings__option">
+            <label>JPEG quality</label>
+            <div class="image-process__settings__slider" id="jpeg-quality">
+              <input type="range" min="1" max="100" value="1">
+              <span>1%</span>
+            </div>
+          </div>
+          <div class="image-process__settings__option">
+            <label>PNG quality</label>
+            <div class="image-process__settings__slider" id="png-quality">
+              <input type="range" min="1" max="100" value="1">
+              <span>1%</span>
+            </div>
+          </div>
+          <div class="image-process__settings__option">
+            <label>Resize to fit</label>
+            <div class="image-process__settings__group">
+              <input type="text" placeholder="width" id="width">
+              <span>&times;</span>
+              <input type="text" placeholder="height" id="height">
+            </div>
+          </div>
+          <button class="button button--primary" id="save">save</button>
+        </div>
+        <div class="image-process__settings__overlay"></div>
+      </div>
       <div class="image-process__drop-zone">
         <div class="image-process__drop-zone__label">
           <h1>Drag and drop a folder here or <span class="text__underline">browse</span></h1>

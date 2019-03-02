@@ -1,6 +1,6 @@
 import Image from "./Image";
 
-export default class ImagePicker {
+export default class ImageGallery {
   protected fileListSelector: string = ".image-process__filelist";
   protected fileListParent: HTMLElement | null = null;
   protected counterSelector: string = ".image-process__counter__label";

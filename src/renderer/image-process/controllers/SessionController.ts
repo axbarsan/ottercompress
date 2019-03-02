@@ -25,7 +25,8 @@ export default class SessionController {
   }
 
   public static async handleQueue(): Promise<void> {
-    const { targetPath, parentPath, imageQueue, processSettings } = SessionController.currentSession;
+    const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
+    const { processSettings, resolutionForResizing } = SessionController.currentSession.imageSettings;
 
     if (parentPath === null || targetPath === null || imageQueue.isFinished || processSettings === null)
       return;
@@ -33,18 +34,10 @@ export default class SessionController {
     try {
       await SessionController.currentSession.imageQueue.process(
         targetPath,
+        resolutionForResizing,
         processSettings
       );
       SessionController.currentSession.imageGallery.setSuccessful(true);
-
-      ConfigController.addConfigOptions({
-        targetPath,
-        parentPath,
-        processSettings
-      });
-
-      ConfigController.save();
-
     } catch (err) {
       SessionController.currentSession.imageGallery.setSuccessful(false);
       console.warn(err);
@@ -61,9 +54,12 @@ export default class SessionController {
 
   public static setParentFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.parentPath = folderPath;
-    SessionController.currentSession.defaultParentPath = folderPath;
 
     if (folderPath !== null) {
+      SessionController.currentSession.defaultParentPath = folderPath;
+      ConfigController.persist({
+        parentPath: folderPath
+      });
       await AppNavigationController.next();
       try {
         await SessionController.addImagesInFolder(folderPath);
@@ -78,17 +74,25 @@ export default class SessionController {
 
   public static setTargetFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.targetPath = folderPath;
-    SessionController.currentSession.defaultTargetPath = folderPath;
 
     if (folderPath !== null) {
+      SessionController.currentSession.defaultTargetPath = folderPath;
+      ConfigController.persist({
+        targetPath: folderPath
+      });
       await AppNavigationController.next();
       SessionController.handleQueue();
     }
   }
 
+  public static setResizeResolution(width: number | null, height: number | null): void {
+    SessionController.currentSession.imageSettings.resolutionForResizing.width = width;
+    SessionController.currentSession.imageSettings.resolutionForResizing.height = height;
+  }
+
   public static loadConfig(): void {
     const config: IConfigStructure = ConfigController.load();
-    SessionController.currentSession.processSettings = config.processSettings;
+    SessionController.currentSession.imageSettings.processSettings = config.processSettings;
     SessionController.currentSession.defaultParentPath = config.parentPath;
     SessionController.currentSession.defaultTargetPath = config.targetPath;
   }
@@ -118,5 +122,18 @@ export default class SessionController {
       ],
       defaultPath: DialogController.normalizeDefaultPath(defaultPath)
     }, SessionController.setTargetFolder);
+  }
+
+  public static setupSettings(): void {
+    SessionController.currentSession.imageSettings.reset();
+    SessionController.currentSession.imageSettings.onSave((): void => {
+      const { processSettings } = SessionController.currentSession.imageSettings;
+
+      if (processSettings !== null) {
+        ConfigController.persist({
+          processSettings
+        });
+      }
+    });
   }
 }

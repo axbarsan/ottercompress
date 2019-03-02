@@ -28,7 +28,7 @@ export default class Application {
     });
   }
 
-  protected static onClose(event: Electron.Event): void {
+  protected static onClose(): void {
     Application.mainWindow = null;
   }
 
@@ -64,7 +64,7 @@ export default class Application {
 
     Application.mainWindow.on("closed", Application.onClose);
 
-    Application.createMenu();
+    // Application.createMenu();
     // Application.mainWindow.webContents.openDevTools();
   }
 
