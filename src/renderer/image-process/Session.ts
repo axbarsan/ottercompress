@@ -1,7 +1,7 @@
 import Image from "./Image";
 import ImageGallery from "./ImageGallery";
-import { IImageProcessorSettings } from "./ImageProcessor";
 import ImageProcessQueue from "./ImageProcessQueue";
+import ImageSettings from "./settings/ImageSettings";
 
 export default class Session {
   public dateStarted: Date = new Date();
@@ -15,10 +15,10 @@ export default class Session {
 
   public readonly imageQueue: ImageProcessQueue = new ImageProcessQueue();
   public readonly imageGallery: ImageGallery = new ImageGallery();
-
-  public processSettings: IImageProcessorSettings[] | null = null;
+  public readonly imageSettings: ImageSettings = new ImageSettings();
 
   public reset(): void {
+    this.imageSettings.reset();
     this.imageQueue.clear();
     this.parentPath = null;
     this.targetPath = null;

@@ -7,6 +7,8 @@ export default class ImageProcessRendererModule {
     SessionController.clearQueue();
 
     window.addEventListener("DOMContentLoaded", () => {
+      SessionController.setupSettings();
+
       const parentFolderSelectBtn: HTMLDivElement | null = document.querySelector(".image-process__drop-zone");
 
       if (parentFolderSelectBtn !== null) {

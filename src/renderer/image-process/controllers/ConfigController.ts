@@ -1,4 +1,3 @@
-import * as path from "path";
 import { ImageTypes } from "../controllers/ImageFilesController";
 import { IImageProcessorSettings } from "../ImageProcessor";
 
@@ -20,14 +19,14 @@ export default class ConfigController {
         settings: {
           progressive: true,
           chromaSubsampling: "4:4:4",
-          quality: 80
+          quality: 50
         }
       },
       {
         format: ImageTypes.PNG,
         settings: {
           progressive: true,
-          quality: 80
+          quality: 50
         }
       }
     ]

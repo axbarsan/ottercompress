@@ -25,7 +25,8 @@ export default class SessionController {
   }
 
   public static async handleQueue(): Promise<void> {
-    const { targetPath, parentPath, imageQueue, processSettings } = SessionController.currentSession;
+    const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
+    const { processSettings, resolutionForResizing } = SessionController.currentSession.imageSettings;
 
     if (parentPath === null || targetPath === null || imageQueue.isFinished || processSettings === null)
       return;
@@ -33,6 +34,7 @@ export default class SessionController {
     try {
       await SessionController.currentSession.imageQueue.process(
         targetPath,
+        resolutionForResizing,
         processSettings
       );
       SessionController.currentSession.imageGallery.setSuccessful(true);
@@ -83,9 +85,14 @@ export default class SessionController {
     }
   }
 
+  public static setResizeResolution(width: number | null, height: number | null): void {
+    SessionController.currentSession.imageSettings.resolutionForResizing.width = width;
+    SessionController.currentSession.imageSettings.resolutionForResizing.height = height;
+  }
+
   public static loadConfig(): void {
     const config: IConfigStructure = ConfigController.load();
-    SessionController.currentSession.processSettings = config.processSettings;
+    SessionController.currentSession.imageSettings.processSettings = config.processSettings;
     SessionController.currentSession.defaultParentPath = config.parentPath;
     SessionController.currentSession.defaultTargetPath = config.targetPath;
   }
@@ -115,5 +122,18 @@ export default class SessionController {
       ],
       defaultPath: DialogController.normalizeDefaultPath(defaultPath)
     }, SessionController.setTargetFolder);
+  }
+
+  public static setupSettings(): void {
+    SessionController.currentSession.imageSettings.setValuesFromProcessingSettings();
+    SessionController.currentSession.imageSettings.onSave((): void => {
+      const { processSettings } = SessionController.currentSession.imageSettings;
+
+      if (processSettings !== null) {
+        ConfigController.persist({
+          processSettings
+        });
+      }
+    });
   }
 }
