@@ -19,14 +19,14 @@ export default class ConfigController {
         settings: {
           progressive: true,
           chromaSubsampling: "4:4:4",
-          quality: 50
+          quality: 80
         }
       },
       {
         format: ImageTypes.PNG,
         settings: {
           progressive: true,
-          quality: 50
+          quality: 80
         }
       }
     ]

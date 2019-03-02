@@ -373,7 +373,6 @@ h6 {
   height: 60vh;
   opacity: 0;
   pointer-events: none;
-  transition: .5s cubic-bezier(0.645, 0.045, 0.355, 1);
   transform: translate3d(0, 100%, 0);
 }
 
@@ -393,7 +392,6 @@ h6 {
   height: 100vh;
   pointer-events: none;
   opacity: 0;
-  transition: .5s ease-out;
 }
 
 .image-process__settings.active .image-process__settings__overlay {

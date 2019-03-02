@@ -125,7 +125,7 @@ export default class SessionController {
   }
 
   public static setupSettings(): void {
-    SessionController.currentSession.imageSettings.setValuesFromProcessingSettings();
+    SessionController.currentSession.imageSettings.reset();
     SessionController.currentSession.imageSettings.onSave((): void => {
       const { processSettings } = SessionController.currentSession.imageSettings;
 

@@ -1,49 +1,42 @@
-import Input from "../../core/Input";
+import GenericInput from "../../core/GenericInput";
 
-export default class ResolutionInput extends Input {
+export default class ResolutionInput extends GenericInput<number | null> {
   protected nullValue: string = "auto";
-
-  constructor(
-    protected selector: string,
-    protected defaultValue?: string | null
-  ) {
-    super(selector);
-
-    if (defaultValue !== undefined)
-      this.setValue(defaultValue);
-    else
-      this.setValue(null);
-  }
 
   protected changeBehaviour(e: Event): void {
     let valueToSet: number = NaN;
-    const currentValue: string | null = (e.target as HTMLInputElement).value;
 
-    if (currentValue !== "")
-      valueToSet = parseInt(currentValue, 10);
+    if (this.realValue !== "")
+      valueToSet = parseInt(this.realValue, 10);
 
     if (isNaN(valueToSet))
-      this.setValue(null);
+      this.setValue(0);
     else
-      this.setValue(String(valueToSet));
+      this.setValue(valueToSet);
   }
 
-  public setValue(value: string | null): void {
+  public setValue(value: number | null): void {
     if (this.element === null)
       return;
 
     let valueToSet: string = this.nullValue;
 
-    if (value !== null)
-      valueToSet = value;
+    if (value !== null && value > 0)
+      valueToSet = String(value);
 
-    this.element.value = valueToSet;
+    this.setInputValue(valueToSet);
   }
 
-  public getValue(): string | null {
-    if (this.element !== null && this.element.value !== this.nullValue)
-      return this.element.value;
+  public getValue(): number | null {
+    const valueAsNumber: number = parseInt(this.realValue, 10);
+
+    if (!isNaN(valueAsNumber))
+      return valueAsNumber;
 
     return null;
+  }
+
+  public resetValue(): void {
+    this.setValue(0);
   }
 }

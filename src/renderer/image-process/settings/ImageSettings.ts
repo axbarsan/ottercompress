@@ -1,5 +1,5 @@
 import { ImageTypes } from "../controllers/ImageFilesController";
-import { IImageProcessorSettings, IImageFormatSettings } from "../ImageProcessor";
+import { IImageFormatSettings, IImageProcessorSettings } from "../ImageProcessor";
 import ImageResolution from "../ImageResolution";
 import ResolutionInput from "./ResolutionInput";
 import SliderInput from "./SliderInput";
@@ -14,12 +14,19 @@ type SaveListener = (
 
 export default class ImageSettings {
   protected activeClass: string = "active";
+  protected transitionDuration: number = 500;
 
   protected parentSelector: string = ".image-process__settings";
   protected parentElement: HTMLElement | null = null;
 
+  protected drawerSelector: string = ".image-process__settings__options";
+  protected drawerElement: HTMLElement | null = null;
+
   protected toggleSelector: string = ".image-process__settings__toggle";
   protected toggleElement: HTMLElement | null = null;
+
+  protected overlaySelector: string = ".image-process__settings__overlay";
+  protected overlayElement: HTMLElement | null = null;
 
   protected saveSelector: string = "#save";
   protected saveElement: HTMLElement | null = null;
@@ -35,8 +42,18 @@ export default class ImageSettings {
   constructor() {
     window.addEventListener("DOMContentLoaded", () => {
       this.parentElement = document.querySelector(this.parentSelector);
+      this.drawerElement = document.querySelector(this.drawerSelector);
       this.toggleElement = document.querySelector(this.toggleSelector);
+      this.overlayElement = document.querySelector(this.overlaySelector);
       this.saveElement = document.querySelector(this.saveSelector);
+
+      if (this.drawerElement !== null)
+        this.drawerElement.style.transition = `${this.transitionDuration}ms cubic-bezier(0.645, 0.045, 0.355, 1)`;
+
+      if (this.overlayElement !== null) {
+        this.overlayElement.style.transition = `${this.transitionDuration}ms ease-out`;
+        this.overlayElement.addEventListener("click", this.cancelBehaviour.bind(this));
+      }
 
       if (this.toggleElement !== null)
         this.toggleElement.addEventListener("click", this.toggleSettingsPanel.bind(this, true));
@@ -50,52 +67,52 @@ export default class ImageSettings {
     });
   }
 
-  protected toggleSettingsPanel = (isOn: boolean): void => {
-    if (this.parentElement === null)
-      return;
+  protected toggleSettingsPanel = (isOn: boolean): Promise<void> => {
+    return new Promise((resolve: () => void): void => {
+      if (this.parentElement === null)
+        return;
 
-    if (isOn)
-      this.parentElement.classList.add(this.activeClass);
-    else
-      this.parentElement.classList.remove(this.activeClass);
+      if (isOn)
+        this.parentElement.classList.add(this.activeClass);
+      else
+        this.parentElement.classList.remove(this.activeClass);
+
+      setTimeout(resolve, this.transitionDuration * 1.2);
+    });
   }
 
   public onSave(callback: SaveListener): void {
     if (this.saveElement !== null)
       this.saveElement.addEventListener("click", (e: Event): void => {
-        const paramsToPass: Array<string | null> = [
-          this.jpegQualitySlider !== null ? this.jpegQualitySlider.getValue() : "1",
-          this.pngQualitySlider !== null ? this.pngQualitySlider.getValue() : "1",
-          this.widthInput !== null ? this.widthInput.getValue() : null,
-          this.heightInput !== null ? this.heightInput.getValue() : null
+        const paramsToPass: Array<number | null> = [
+          this.jpegQualitySlider !== null ? this.jpegQualitySlider.getValue() : 1,
+          this.pngQualitySlider !== null ? this.pngQualitySlider.getValue() : 1,
+          this.widthInput !== null ? this.widthInput.getValue() : 1,
+          this.heightInput !== null ? this.heightInput.getValue() : 1
         ];
 
-        const normalizedParams: Array<number | null> = paramsToPass.map((value: string | null): number | null => {
-          return (value !== null) ? parseInt(value, 10) : null;
-        });
-
         // @ts-ignore
-        callback(e, ...normalizedParams);
+        callback(e, ...paramsToPass);
       });
   }
 
   public setValues(
-    jpegQuality?: number | null,
-    pngQuality?: number | null,
+    jpegQuality?: number,
+    pngQuality?: number,
     widthInput?: number | null,
     heightInput?: number | null,
   ): void {
     if (jpegQuality !== undefined && this.jpegQualitySlider !== null)
-      this.jpegQualitySlider.setValue(jpegQuality as string | null);
+      this.jpegQualitySlider.setValue(jpegQuality);
 
     if (pngQuality !== undefined && this.pngQualitySlider !== null)
-      this.pngQualitySlider.setValue(pngQuality as string | null);
+      this.pngQualitySlider.setValue(pngQuality);
 
     if (widthInput !== undefined && this.widthInput !== null)
-      this.widthInput.setValue(widthInput as string | null);
+      this.widthInput.setValue(widthInput);
 
     if (heightInput !== undefined && this.heightInput !== null)
-      this.heightInput.setValue(heightInput as string | null);
+      this.heightInput.setValue(heightInput);
   }
 
   public reset(): void {
@@ -152,5 +169,10 @@ export default class ImageSettings {
     this.resolutionForResizing.width = width;
     this.resolutionForResizing.height = height;
     this.toggleSettingsPanel(false);
+  }
+
+  protected async cancelBehaviour(): Promise<void> {
+    await this.toggleSettingsPanel(false);
+    this.reset();
   }
 }
