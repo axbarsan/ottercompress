@@ -82,7 +82,7 @@ export default class Application {
         submenu: [
           {
             label: "View repository",
-            click() { require("electron").shell.openExternal("https://github.com/axbarsan"); }
+            click() { require("electron").shell.openExternal("https://github.com/axbarsan/ottercompress"); }
           }
         ]
       }
