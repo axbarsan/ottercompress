@@ -31,8 +31,6 @@ export default class ImageProcessor {
     ImageProcessor.addProcessSettings(image, settings, sharpImage);
     ImageProcessor.setResizeResolution(resizeResolution, sharpImage);
 
-    console.log(resizeResolution);
-
     await sharpImage.toFile(targetFilePath);
     image.isProcessed = true;
 
@@ -74,8 +72,6 @@ export default class ImageProcessor {
         ...additionalOptions,
         ...selectedSettings[0].settings
       };
-
-      console.log(selectedSettings[0].settings);
 
       return selectedSettings[0].settings;
     }
