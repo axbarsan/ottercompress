@@ -1,0 +1,45 @@
+osx_image: xcode10.1
+
+dist: trusty
+sudo: false
+
+language: node_js
+node_js: "11.10.1"
+
+env:
+  global:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+os:
+  - osx
+
+cache:
+  directories:
+  - node_modules
+  - $HOME/.cache/electron
+  - $HOME/.cache/electron-builder
+  - $HOME/.npm/_prebuilds
+
+before_install:
+  - npm install -g yarn --cache-min 999999999
+
+install:
+  - yarn
+
+script:
+  - yarn release --mac --win
+
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GH_TOKEN
+  on:
+    tags: true
+
+branches:
+  only:
+    - master
