@@ -23,6 +23,7 @@ cache:
 
 before_install:
   - npm install -g yarn --cache-min 999999999
+
 install:
   - yarn
 
@@ -31,3 +32,12 @@ script:
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GH_TOKEN
+
+branches:
+  only:
+    - master
