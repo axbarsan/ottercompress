@@ -19,7 +19,7 @@
     "postinstall": "electron-builder install-app-deps",
     "prestart": "tsc",
     "start": "electron --inspect=9229 ./app/main.js",
-    "dist": "tsc && build"
+    "dist": "tsc && build --publish onTagOrDraft"
   },
   "devDependencies": {
     "devtron": "^1.4.0",

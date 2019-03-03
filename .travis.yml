@@ -13,7 +13,6 @@ env:
 
 os:
   - osx
-  - windows
 
 cache:
   directories:
@@ -22,5 +21,13 @@ cache:
   - $HOME/.cache/electron-builder
   - $HOME/.npm/_prebuilds
 
+before_install:
+  - npm install -g yarn --cache-min 999999999
+install:
+  - yarn
+
 script:
-  - npm run dist
+  - yarn dist --mac --win
+
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
