@@ -28,7 +28,7 @@ install:
   - yarn
 
 script:
-  - yarn dist --mac --win
+  - yarn release --mac --win
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
