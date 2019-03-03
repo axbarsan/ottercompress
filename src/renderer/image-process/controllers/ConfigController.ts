@@ -48,8 +48,6 @@ export default class ConfigController {
     else
       ConfigController.config = ConfigController.defaultConfig;
 
-    console.log(ConfigController.config);
-
     return ConfigController.config;
   }
 
