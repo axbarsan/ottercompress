@@ -1,16 +1,61 @@
 {
   "name": "ottercompress",
   "version": "1.0.0",
-  "description": "Just an otter compressing some photos",
-  "scripts": {
-    "prestart": "tsc",
-    "start": "electron ./dist/index.js"
-  },
   "author": "axbarsan",
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axbarsan/ottercompress.git"
+  },
+  "main": "app/main.js",
+  "description": "Just an otter compressing some images",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "prestart": "tsc",
+    "start": "electron --inspect=9229 ./app/main.js",
+    "dist": "tsc && build"
+  },
   "devDependencies": {
-    "electron": "^4.0.5",
+    "devtron": "^1.4.0",
+    "electron": "^4.0.6",
+    "electron-builder": "^20.38.5",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "asar": "^1.0.0",
+    "sharp": "^0.21.3"
+  },
+  "nodeGypRebuild": true,
+  "build": {
+    "directories": {
+      "output": "./dist"
+    },
+    "productName": "ottercompress",
+    "appId": "com.electron.ottercompress",
+    "files": [
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "darkModeSupport": true,
+      "artifactName": "${productName}-${version}-osx.${ext}",
+      "category": "public.app-category.productivity",
+      "target": [
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "zip"
+      ]
+    }
+  }
 }

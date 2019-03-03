@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ottercompress</title>
+  <link rel="stylesheet" href="./style.css">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-inline'; script-src 'self' 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'; img-src 'self' data:">
+</head>
+
+<body style="opacity: 0;">
+  <div class="app__header"></div>
+  <div class="app__wrapper">
+    <div class="app__screen">
+      <div class="image-process__settings">
+        <div class="image-process__settings__toggle">
+          <img src="./images/settings.svg" alt="Settings">
+          <span>Settings</span>
+        </div>
+        <div class="image-process__settings__options">
+          <div class="image-process__settings__option">
+            <label>JPEG quality</label>
+            <div class="image-process__settings__slider" id="jpeg-quality">
+              <input type="range" min="1" max="100" value="1">
+              <span>1%</span>
+            </div>
+          </div>
+          <div class="image-process__settings__option">
+            <label>PNG quality</label>
+            <div class="image-process__settings__slider" id="png-quality">
+              <input type="range" min="1" max="100" value="1">
+              <span>1%</span>
+            </div>
+          </div>
+          <div class="image-process__settings__option">
+            <label>Resize to fit</label>
+            <div class="image-process__settings__group">
+              <input type="text" placeholder="width" id="width">
+              <span>&times;</span>
+              <input type="text" placeholder="height" id="height">
+            </div>
+          </div>
+          <button class="button button--primary" id="save">save</button>
+        </div>
+        <div class="image-process__settings__overlay"></div>
+      </div>
+      <div class="image-process__drop-zone">
+        <div class="image-process__drop-zone__label">
+          <h1>Drag and drop a folder here or <span class="text__underline">browse</span></h1>
+        </div>
+      </div>
+    </div>
+    <div class="app__screen">
+      <div class="image-process__select--target">
+        <h1>Pick a target folder</h1>
+        <button class="button button--primary">browse</button>
+      </div>
+      <div class="image-process__filelist">
+      </div>
+      <div class="image-process__counter">
+        <p><span class="image-process__counter__label">0</span> image(s) found</p>
+      </div>
+    </div>
+    <div class="app__screen">
+      <div class="image-process__loading">
+        <div class="image-process__loading__progress">
+          <div class="image-process__loading__label">
+            <h1>Optimizing...</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="app__screen">
+      <div class="image-process__loading">
+        <div class="image-process__loading__progress image-process__loading__progress--result">
+          <div class="image-process__loading__progress--result__success">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+            <div class="image-process__loading__label">
+              <h1>Done!</h1>
+            </div>
+            <button class="button button--primary image-process__reset">Optimize more images</button>
+          </div>
+          <div class="image-process__loading__progress--result__fail">
+            <div class="image-process__loading__label">
+              <h1>Oops! Something went wrong :(</h1>
+            </div>
+            <button class="button button--primary image-process__reset">Try again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script nonce="EDNnf03nceIOfn39fn3e9h3sdfa">
+    require("../renderer/index.js");
+  </script>
+</body>
+
+</html>

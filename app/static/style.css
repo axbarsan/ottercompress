@@ -1,0 +1,476 @@
+/* Colors: https://colorhunt.co/palette/139297 */
+
+@font-face {
+  font-family: "Raleway Light";
+  src: local("Raleway Light"), local("Raleway-Light"), url("./fonts/Raleway-Light.woff") format("woff");
+}
+
+* {
+  outline: none;
+}
+
+html {
+  font-size: 9px;
+  user-select: none;
+  background: #6d3580;
+}
+
+html.loaded body {
+  opacity: 1!important;
+  transition: .5s ease-out 1s;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway Light";
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+}
+
+h4 {
+  font-size: 1.4rem;
+}
+
+h5 {
+  font-size: 1.2rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+.text__underline {
+  text-decoration: underline;
+}
+
+.button {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  border-radius: 3px;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: .2s ease-out;
+  padding: .8rem 2rem;
+}
+
+.button--primary {
+  background: #ffe26f;
+  color: #6d3580;
+}
+
+.button--primary:hover {
+  background: #e7cd63;
+}
+
+.button--primary:active {
+  background: #b8a24c;
+}
+
+.app__header {
+  height: 25px;
+  width: 100%;
+  z-index: 9999;
+  -webkit-app-region: drag;
+}
+
+.app__wrapper {
+  margin: 0 auto;
+  max-width: 400px;
+  overflow: hidden;
+  height: calc(100vh - 25px);
+  text-align: center;
+  position: relative;
+}
+
+.app__screen {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 2rem 0;
+  box-sizing: border-box;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.8);
+}
+
+.app__screen.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1);
+}
+
+.image-process__drop-zone {
+  box-sizing: border-box;
+  padding: 5rem 4rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__drop-zone__label {
+  border-radius: 10px;
+  border: 4px dashed #d8d8d8;
+  box-sizing: border-box;
+  padding: 3rem 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  transition: .3s ease-out;
+}
+
+.image-process__drop-zone__label:hover, .image-process__drop-zone__label:active {
+  color: #ffe26f;
+  border-color: #ffe26f;
+}
+
+.image-process__drop-zone.active .image-process__drop-zone__label {
+  opacity: .3;
+}
+
+.image-process__filelist {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  height: 60vh;
+  opacity: 0;
+  transition: .3s ease-out 1.2s;
+  overflow: hidden;
+}
+
+.app__screen.active .image-process__filelist {
+  opacity: 1;
+  transition-delay: 0;
+}
+
+.image-process__filelist__file {
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+}
+
+.image-process__filelist__file img {
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 0;
+  transition: .3s;
+}
+
+.image-process__filelist__file img.loaded {
+  opacity: 1;
+}
+
+.image-process__select--target {
+  box-sizing: border-box;
+  padding-bottom: 4rem;
+  opacity: 0;
+  transition: .3s ease-out;
+  pointer-events: none;
+}
+
+.image-process__select--target.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.image-process__counter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 18vh;
+  height: 28vh;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to bottom, rgba(109, 53, 128, 0) 0%, rgb(109, 53, 128) 65%);
+}
+
+.image-process__counter p {
+  font-size: 1.4rem;
+}
+
+.image-process__loading {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__loading__progress:not(.image-process__loading__progress--result), .image-process__loading__progress--result__success, .image-process__loading__progress--result__fail {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-process__loading__progress--result__success, .image-process__loading__progress--result__fail {
+  display: none;
+}
+
+.image-process__loading__progress--result.success .image-process__loading__progress--result__success, .image-process__loading__progress--result.fail .image-process__loading__progress--result__fail {
+  display: flex;
+}
+
+.image-process__loading__progress img, .image-process__loading__progress svg {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+
+.image-process__loading__label {
+  margin-top: 3rem;
+}
+
+.image-process__loading__label+.button {
+  position: absolute;
+  bottom: 7vh;
+}
+
+.checkmark {
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #e4734f;
+  opacity: 0;
+  transition: .3s ease-out;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #e4734f;
+  fill: none;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.app__screen.active .checkmark {
+  opacity: 1;
+  animation: fill .4s ease-in-out 1.4s forwards, scale .3s ease-in-out 1.9s both;
+}
+
+.app__screen.active .checkmark__circle {
+  animation: stroke .6s cubic-bezier(0.650, 0.000, 0.450, 1.000) 1s forwards;
+}
+
+.app__screen.active .checkmark__check {
+  animation: stroke .3s cubic-bezier(0.650, 0.000, 0.450, 1.000) 1.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #e4734f;
+  }
+}
+
+.image-process__settings {
+  position: absolute;
+  bottom: 2rem;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+.image-process__settings__toggle {
+  position: relative;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: .3s ease-out;
+}
+
+.image-process__settings__toggle * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.image-process__settings__toggle span {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-left: .5rem;
+}
+
+.image-process__settings__toggle:hover, .image-process__settings__toggle:active {
+  opacity: 1;
+}
+
+.image-process__settings__toggle img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.image-process__settings__options {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #cc4165;
+  box-sizing: border-box;
+  padding: 2rem 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  height: 60vh;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 100%, 0);
+}
+
+.image-process__settings.active .image-process__settings__options {
+  opacity: 1;
+  pointer-events: all;
+  transform: translate3d(0, 0, 0);
+}
+
+.image-process__settings__overlay {
+  background: #6d3580;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.image-process__settings.active .image-process__settings__overlay {
+  pointer-events: all;
+  opacity: .8;
+}
+
+.image-process__settings__options button {
+  margin-top: 4rem;
+  width: 100%;
+}
+
+.image-process__settings__option+.image-process__settings__option {
+  margin-top: 2rem;
+}
+
+.image-process__settings__option {
+  width: 80%;
+  position: relative;
+}
+
+.image-process__settings__option label, .image-process__settings__slider span {
+  font-size: 1.2rem;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.image-process__settings__slider {
+  margin-top: 2rem;
+}
+
+.image-process__settings__slider span {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.image-process__settings__option input {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #fff;
+  color: #6d3580;
+  display: block;
+  width: 100%;
+  font-size: 1.2rem;
+  border-radius: 3px;
+  padding: 1rem;
+  transition: .3s ease-out;
+}
+
+.image-process__settings__option input:focus {
+  border-color: #fad4c9;
+  background: #fad4c9;
+}
+
+.image-process__settings__option input[type="range"] {
+  padding: 0;
+  height: 2px;
+}
+
+.image-process__settings__option input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  background: #e4734f;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.image-process__settings__group {
+  display: flex;
+  align-items: center;
+}
+
+.image-process__settings__group span {
+  font-size: 2.2rem;
+  padding: 0 1rem;
+}
