@@ -1,3 +1,6 @@
+/**
+ * Object used for setting the resize resolution after processing
+ */
 export default class ImageResolution {
   constructor(
     public width: number | null,

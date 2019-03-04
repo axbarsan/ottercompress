@@ -12,6 +12,9 @@ type SaveListener = (
   height: number | null
 ) => void;
 
+/**
+ * Image settings controller
+ */
 export default class ImageSettings {
   protected activeClass: string = "active";
   protected transitionDuration: number = 500;
@@ -67,6 +70,9 @@ export default class ImageSettings {
     });
   }
 
+  /**
+   * Toggle panel
+   */
   protected toggleSettingsPanel = (isOn: boolean): Promise<void> => {
     return new Promise((resolve: () => void): void => {
       if (this.parentElement === null)
@@ -81,6 +87,10 @@ export default class ImageSettings {
     });
   }
 
+  /**
+   * Add save listener
+   * @param callback
+   */
   public onSave(callback: SaveListener): void {
     if (this.saveElement !== null)
       this.saveElement.addEventListener("click", (e: Event): void => {
@@ -96,6 +106,13 @@ export default class ImageSettings {
       });
   }
 
+  /**
+   * Set controls values
+   * @param jpegQuality
+   * @param pngQuality
+   * @param widthInput
+   * @param heightInput
+   */
   public setValues(
     jpegQuality?: number,
     pngQuality?: number,
@@ -115,12 +132,19 @@ export default class ImageSettings {
       this.heightInput.setValue(heightInput);
   }
 
+  /**
+   * Reset to default settings values
+   */
   public reset(): void {
     this.resolutionForResizing.reset();
     this.setValues(undefined, undefined, null, null);
     this.setValuesFromProcessingSettings();
   }
 
+  /**
+   * Get settings values for an image type
+   * @param type
+   */
   public getSettingsForType(type: ImageTypes): IImageFormatSettings {
     const settingsWithTypeIndex: number | null = this.getSettingsIndexForType(type);
 
@@ -130,6 +154,10 @@ export default class ImageSettings {
     return {};
   }
 
+  /**
+   * Get settings index in process settings array for an image type
+   * @param type
+   */
   public getSettingsIndexForType(type: ImageTypes): number | null {
     if (this.processSettings !== null) {
       const chosenSettings: IImageProcessorSettings[] =
@@ -142,6 +170,9 @@ export default class ImageSettings {
     return null;
   }
 
+  /**
+   * Set controls values from settings
+   */
   public setValuesFromProcessingSettings(): void {
     const settingsForJPEG: IImageFormatSettings = this.getSettingsForType(ImageTypes.JPEG);
     const settingsForPNG: IImageFormatSettings = this.getSettingsForType(ImageTypes.PNG);
@@ -149,6 +180,14 @@ export default class ImageSettings {
     this.setValues(settingsForJPEG.quality, settingsForPNG.quality);
   }
 
+  /**
+   * Default save event listener callback
+   * @param e
+   * @param jpegQuality
+   * @param pngQuality
+   * @param width
+   * @param height
+   */
   protected saveBehaviour(
     e: Event,
     jpegQuality: number,
@@ -171,6 +210,9 @@ export default class ImageSettings {
     this.toggleSettingsPanel(false);
   }
 
+  /**
+   * Default cancel event listener callback
+   */
   protected async cancelBehaviour(): Promise<void> {
     await this.toggleSettingsPanel(false);
     this.reset();

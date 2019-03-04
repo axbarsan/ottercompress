@@ -2,11 +2,19 @@ import { BrowserWindow, Menu, screen } from "electron";
 import * as path from "path";
 import * as process from "process";
 
+/**
+ * Electron application
+ */
 export default class Application {
   protected static mainWindow: BrowserWindow | null = null;
   protected static app: Electron.App;
   protected static browserWindow: typeof BrowserWindow;
 
+  /**
+   * Create global app and browserwindow references
+   * @param app Electron app
+   * @param browserWindow Electron BrowserWindow
+   */
   public static bootstrap(app: Electron.App, browserWindow: typeof BrowserWindow): void {
     Application.app = app;
     Application.browserWindow = browserWindow;
@@ -28,10 +36,16 @@ export default class Application {
     });
   }
 
+  /**
+   * Window close callback
+   */
   protected static onClose(): void {
     Application.mainWindow = null;
   }
 
+  /**
+   * Create window
+   */
   protected static onReady(): void {
     Application.mainWindow = new Application.browserWindow({
       height: 500,
@@ -64,32 +78,18 @@ export default class Application {
 
     Application.mainWindow.on("closed", Application.onClose);
 
-    // Application.createMenu();
-    // Application.mainWindow.webContents.openDevTools();
+    Application.createMenu();
   }
 
+  /**
+   * Create app top menu
+   */
   protected static createMenu(): void {
+    if (process.platform !== "darwin")
+      return;
+
     const template: Electron.MenuItemConstructorOptions[] = [
       {
-        role: "window",
-        submenu: [
-          { role: "minimize" },
-          { role: "close" }
-        ]
-      },
-      {
-        role: "help",
-        submenu: [
-          {
-            label: "View repository",
-            click() { require("electron").shell.openExternal("https://github.com/axbarsan/ottercompress"); }
-          }
-        ]
-      }
-    ];
-
-    if (process.platform === "darwin") {
-      template.unshift({
         label: Application.app.getName(),
         submenu: [
           { role: "about" },
@@ -102,17 +102,27 @@ export default class Application {
           { type: "separator" },
           { role: "quit" }
         ]
-      });
-
-      // Window menu
-      template[1].submenu = [
-        { role: "close" },
-        { role: "minimize" },
-        { role: "zoom" },
-        { type: "separator" },
-        { role: "front" }
-      ];
-    }
+      },
+      {
+        role: "window",
+        submenu: [
+          { role: "close" },
+          { role: "minimize" },
+          { role: "zoom" },
+          { type: "separator" },
+          { role: "front" }
+        ]
+      },
+      {
+        role: "help",
+        submenu: [
+          {
+            label: "View repository",
+            click() { require("electron").shell.openExternal("https://github.com/axbarsan/ottercompress"); }
+          }
+        ]
+      }
+    ];
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);

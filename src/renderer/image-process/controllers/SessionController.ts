@@ -5,6 +5,9 @@ import Session from "../Session";
 import ConfigController, { IConfigStructure } from "./ConfigController";
 import ImageFilesController from "./ImageFilesController";
 
+/**
+ * Controller used for handling the current session
+ */
 export default class SessionController {
   protected static currentSession: Session = new Session();
 
@@ -12,6 +15,10 @@ export default class SessionController {
     return SessionController.currentSession;
   }
 
+  /**
+   * Add images with supported formats in the current session queue from a folder
+   * @param path the folder path
+   */
   public static async addImagesInFolder(path: string): Promise<Image[]> {
     const images: Image[] = await ImageFilesController.getImagesInFolder(path);
 
@@ -24,6 +31,9 @@ export default class SessionController {
     return images;
   }
 
+  /**
+   * Handle current image queue
+   */
   public static async handleQueue(): Promise<void> {
     const { targetPath, parentPath, imageQueue } = SessionController.currentSession;
     const { processSettings, resolutionForResizing } = SessionController.currentSession.imageSettings;
@@ -46,11 +56,17 @@ export default class SessionController {
     AppNavigationController.next();
   }
 
+  /**
+   * Clear current queue
+   */
   public static clearQueue(): void {
     SessionController.currentSession.reset();
     AppNavigationController.reset();
   }
 
+  /**
+   * Set current session parent folder
+   */
   public static setParentFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.parentPath = folderPath;
 
@@ -71,6 +87,9 @@ export default class SessionController {
     }
   }
 
+  /**
+   * Set current session saving folder
+   */
   public static setTargetFolder = async (folderPath: string | null): Promise<void> => {
     SessionController.currentSession.targetPath = folderPath;
 
@@ -84,11 +103,19 @@ export default class SessionController {
     }
   }
 
+  /**
+   * Set current session resize resolution
+   * @param width
+   * @param height
+   */
   public static setResizeResolution(width: number | null, height: number | null): void {
     SessionController.currentSession.imageSettings.resolutionForResizing.width = width;
     SessionController.currentSession.imageSettings.resolutionForResizing.height = height;
   }
 
+  /**
+   * Load current config and place the settings in the current session
+   */
   public static loadConfig(): void {
     const config: IConfigStructure = ConfigController.load();
     SessionController.currentSession.imageSettings.processSettings = config.processSettings;
@@ -96,6 +123,9 @@ export default class SessionController {
     SessionController.currentSession.defaultTargetPath = config.targetPath;
   }
 
+  /**
+   * Show the dialog to pick a parent path
+   */
   public static showParentPathDialog(): void {
     const defaultPath: string | null = SessionController.currentSession.defaultParentPath;
 
@@ -109,6 +139,9 @@ export default class SessionController {
     }, SessionController.setParentFolder);
   }
 
+  /**
+   * Show a dialog to pick the target path
+   */
   public static showTargetPathDialog(): void {
     const defaultPath: string | null = SessionController.currentSession.defaultTargetPath;
 
@@ -123,6 +156,9 @@ export default class SessionController {
     }, SessionController.setTargetFolder);
   }
 
+  /**
+   * Add settings save event listener callback to persist settings
+   */
   public static setupSettings(): void {
     SessionController.currentSession.imageSettings.reset();
     SessionController.currentSession.imageSettings.onSave((): void => {

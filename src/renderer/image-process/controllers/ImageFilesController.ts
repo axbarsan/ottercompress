@@ -3,17 +3,30 @@ import { ParsedPath } from "path";
 import FilesController from "../../core/FilesController";
 import Image from "../Image";
 
+/**
+ * Supported image types
+ */
 export enum ImageTypes {
   JPEG = "jpeg",
   PNG = "png"
 }
 
+/**
+ * Supported image formats
+ */
 export const ImageFormats = {
   [ImageTypes.JPEG]: [".jpg", ".jpeg"],
   [ImageTypes.PNG]: [".png"]
 };
 
+/**
+ * Controller used for handling image files
+ */
 export default class ImageFilesController extends FilesController {
+  /**
+   * Get all images with the supported formats in a folder
+   * @param folderPath
+   */
   public static async getImagesInFolder(folderPath: string): Promise<Image[]> {
     const remote = require("electron").remote;
     const fs = remote.require("fs").promises;
@@ -45,6 +58,10 @@ export default class ImageFilesController extends FilesController {
     return images;
   }
 
+  /**
+   * Is extension supported
+   * @param extension
+   */
   public static isExtensionValid(extension: string): boolean {
     let isValid: boolean = false;
 
@@ -56,6 +73,10 @@ export default class ImageFilesController extends FilesController {
     return isValid;
   }
 
+  /**
+   * Get image object type by extension
+   * @param extension
+   */
   public static getImageTypeByExtension(extension: string): ImageTypes {
     for (const format of Object.entries(ImageFormats)) {
       if (format[1].indexOf(extension) !== -1)

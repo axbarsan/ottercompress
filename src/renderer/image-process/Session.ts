@@ -22,7 +22,7 @@ export default class Session {
     this.imageQueue.clear();
     this.parentPath = null;
     this.targetPath = null;
-    this.imageGallery.clearHTML();
+    this.imageGallery.clear();
   }
 
   public add(image: Image): void {

@@ -1,5 +1,8 @@
 import GenericInput from "../../core/GenericInput";
 
+/**
+ * Resolution input
+ */
 export default class ResolutionInput extends GenericInput<number | null> {
   protected nullValue: string = "auto";
 
