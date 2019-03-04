@@ -1,3 +1,6 @@
+/**
+ * App navigation controller used for navigating between screens
+ */
 class AppNavigationController {
   protected elements: HTMLElement[] = [];
   protected activeIndex: number = 0;
@@ -25,6 +28,9 @@ class AppNavigationController {
     });
   }
 
+  /**
+   * Set desired active screen index
+   */
   public setActiveIndex = (index: number): Promise<void> => {
     return new Promise((resolve: () => void) => {
       this.activeIndex = index;
@@ -43,20 +49,34 @@ class AppNavigationController {
     });
   }
 
+  /**
+   * Go to next screen
+   */
   public next = async (): Promise<void> => {
     if (this.activeIndex < (this.elements.length - 1))
       await this.setActiveIndex(this.activeIndex + 1);
   }
 
+  /**
+   * Go to previous screen
+   */
   public prev = async (): Promise<void> => {
     if (this.activeIndex > 0)
       await this.setActiveIndex(this.activeIndex - 1);
   }
 
+  /**
+   * Go to first screen
+   */
   public reset = async (): Promise<void> => {
     await this.setActiveIndex(0);
   }
 
+  /**
+   * Set element transition delay
+   * @param element element as HTMLElement
+   * @param amount in ms
+   */
   protected setTransitionDelay(element: HTMLElement, amount: number): void {
     element.style.transitionDelay = `${amount}ms`;
   }

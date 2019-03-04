@@ -5,11 +5,17 @@ interface IFileDraggingControllerConfig {
   dropCallback: (files: FileList) => void;
 }
 
+/**
+ * Controller used for dragging files
+ */
 export default class FileDraggingController {
   constructor(protected config: IFileDraggingControllerConfig) {
     this.addEvents();
   }
 
+  /**
+   * Add element events
+   */
   protected addEvents(): void {
     this.config.element.ondragover = this.setActiveToggle.bind(this, true);
     this.config.element.ondragenter = this.setActiveToggle.bind(this, true);
@@ -31,6 +37,10 @@ export default class FileDraggingController {
     };
   }
 
+  /**
+   * Toggle active state of the drop zone
+   * @param on is active or not
+   */
   protected setActiveToggle(on: boolean): boolean {
     if (on)
       this.config.element.classList.add(this.config.activeClass);

@@ -1,6 +1,9 @@
 import FileDraggingController from "../core/FileDraggingController";
 import SessionController from "./controllers/SessionController";
 
+/**
+ * Image processing renderer module
+ */
 export default class ImageProcessRendererModule {
   constructor() {
     SessionController.loadConfig();

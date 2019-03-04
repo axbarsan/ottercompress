@@ -1,5 +1,8 @@
 import Image from "./Image";
 
+/**
+ * Image gallery controller
+ */
 export default class ImageGallery {
   protected fileListSelector: string = ".image-process__filelist";
   protected fileListParent: HTMLElement | null = null;
@@ -19,6 +22,10 @@ export default class ImageGallery {
     });
   }
 
+  /**
+   * Generate html for an image
+   * @param image
+   */
   protected generateImageHTML(image: Image): void {
     if (this.fileListParent === null)
       return;
@@ -38,6 +45,10 @@ export default class ImageGallery {
     this.fileListParent.appendChild(wrapperElement);
   }
 
+  /**
+   * Update items count
+   * @param count
+   */
   public updateCounter(count: number): void {
     if (this.counterElement === null)
       return;
@@ -45,6 +56,10 @@ export default class ImageGallery {
     this.counterElement.textContent = String(count);
   }
 
+  /**
+   * Set target browser visibility
+   * @param isOn
+   */
   public setTargetBrowserVisibleState(isOn: boolean): void {
     if (this.targetBrowserElement === null)
       return;
@@ -55,7 +70,10 @@ export default class ImageGallery {
       this.targetBrowserElement.classList.remove("active");
   }
 
-  public clearHTML(): void {
+  /**
+   * Clear gallery
+   */
+  public clear(): void {
     if (this.fileListParent === null || this.resultElement === null)
       return;
 
@@ -67,10 +85,18 @@ export default class ImageGallery {
     this.updateCounter(0);
   }
 
+  /**
+   * Add new image
+   * @param image
+   */
   public addImage(image: Image): void {
     this.generateImageHTML(image);
   }
 
+  /**
+   * Set successful state
+   * @param isOn
+   */
   public setSuccessful(isOn: boolean): void {
     if (this.resultElement === null)
       return;

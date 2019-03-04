@@ -13,7 +13,18 @@ export interface IImageProcessorSettings {
   settings: IImageFormatSettings;
 }
 
+/**
+ * Controller used for handling image processing
+ * Currently using the `sharp` native module
+ */
 export default class ImageProcessor {
+  /**
+   * Process image
+   * @param targetPath folder path to save file
+   * @param image
+   * @param resizeResolution
+   * @param settings
+   */
   public static async process(
     targetPath: string, image: Image, resizeResolution: ImageResolution, settings: IImageProcessorSettings[]
   ): Promise<Image> {
@@ -28,7 +39,7 @@ export default class ImageProcessor {
     const targetFilePath: string = path.join(targetPath, newFileName);
 
     const sharpImage = await sharp(image.data);
-    ImageProcessor.addProcessSettings(image, settings, sharpImage);
+    ImageProcessor.addProcessSettings(image.type, settings, sharpImage);
     ImageProcessor.setResizeResolution(resizeResolution, sharpImage);
 
     await sharpImage.toFile(targetFilePath);
@@ -37,17 +48,28 @@ export default class ImageProcessor {
     return image;
   }
 
-  public static addProcessSettings(image: Image, settings: IImageProcessorSettings[], imgProcess: any): void {
-    switch (image.type) {
+  /**
+   * Add image processing settings for the current type
+   * @param type
+   * @param settings
+   * @param imgProcess sharp current image processing object
+   */
+  public static addProcessSettings(type: ImageTypes, settings: IImageProcessorSettings[], imgProcess: any): void {
+    switch (type) {
       case ImageTypes.JPEG:
-        imgProcess.jpeg(ImageProcessor.getSettingsByType(settings, image.type));
+        imgProcess.jpeg(ImageProcessor.getSettingsByType(settings, type));
         break;
       case ImageTypes.PNG:
-        imgProcess.png(ImageProcessor.getSettingsByType(settings, image.type));
+        imgProcess.png(ImageProcessor.getSettingsByType(settings, type));
         break;
     }
   }
 
+  /**
+   * Set resize resolution
+   * @param resolution resolution object
+   * @param imgProcess sharp current image processing object
+   */
   public static setResizeResolution(resolution: ImageResolution, imgProcess: any): void {
     const { width, height } = resolution;
 
@@ -60,6 +82,12 @@ export default class ImageProcessor {
     });
   }
 
+  /**
+   * Get settings for image type
+   * @param settings all settings
+   * @param type image type
+   * @param additionalOptions any additional options to add
+   */
   public static getSettingsByType(
     settings: IImageProcessorSettings[], type: ImageTypes, additionalOptions?: IImageFormatSettings
   ): IImageFormatSettings {

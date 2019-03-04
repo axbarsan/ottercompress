@@ -1,5 +1,8 @@
 import { ImageTypes } from "./controllers/ImageFilesController";
 
+/**
+ * Image object
+ */
 export default class Image {
   public isProcessed: boolean = false;
 

@@ -1,5 +1,8 @@
 import GenericInput from "../../core/GenericInput";
 
+/**
+ * Slider input
+ */
 export default class SliderInput extends GenericInput<number> {
   protected labelElement: HTMLElement | null = null;
   protected parentElement: HTMLElement | null = null;
